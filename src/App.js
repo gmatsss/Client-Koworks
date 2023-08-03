@@ -1,24 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from "./component/header/header";
+
+import "./app.scss";
+
+//homepage
+import Home from "./pages/home/home";
+
+//howitworks
+import Employer from "./pages/how-it-works/employer/employer";
+
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<Header />}>
+        {/* index is the induction of base component */}
+        <Route index element={<Home />} />
+        <Route path="/employer" element={<Employer />} />
+      </Route>
+    </Routes>
   );
 }
 
