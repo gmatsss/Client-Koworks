@@ -32,7 +32,7 @@ const Header = () => {
           </a>
           <ul>
             <li>
-              <a href="https://linkagekoworks.viewourdesign.info">Home</a>
+              <a href="/">Home</a>
             </li>
             <li>
               <a href="#" className="">
@@ -40,47 +40,31 @@ const Header = () => {
               </a>
               <ul className="sub-menu">
                 <li>
-                  <a href="https://linkagekoworks.viewourdesign.info/page/employer">
-                    Employer
-                  </a>
+                  <a href="/HowitWorks/employer">Employer</a>
                 </li>
                 <li>
-                  <a href="https://linkagekoworks.viewourdesign.info/page/job-seeker">
-                    Job Seeker
-                  </a>
+                  <a href="/HowitWorks/jobseeker">Job Seeker</a>
                 </li>
               </ul>
             </li>
 
             <li>
-              <a
-                href="https://linkagekoworks.viewourdesign.info/post-a-job"
-                className=""
-              >
+              <a href="PostAJob" className="">
                 Post A Job
               </a>
             </li>
             <li>
-              <a
-                href="https://linkagekoworks.viewourdesign.info/job-seekers"
-                className=""
-              >
+              <a href="/Jobseek" className="">
                 Job Seeker
               </a>
             </li>
             <li>
-              <a
-                href="https://linkagekoworks.viewourdesign.info/page/pricing"
-                className=""
-              >
+              <a href="/Pricing" className="">
                 Pricing
               </a>
             </li>
             <li>
-              <a
-                href="https://linkagekoworks.viewourdesign.info/resources"
-                className=""
-              >
+              <a href="/Resources" className="">
                 Resources
               </a>
             </li>
