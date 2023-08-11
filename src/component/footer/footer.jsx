@@ -1,99 +1,66 @@
+import React from "react";
 import logo from "../../imgs/linkage-logo.png";
+import FooterColumn from "./components/FooterColumn";
+
 const Footer = () => {
+  const columns = [
+    {
+      title: "Employers",
+      links: [
+        { href: "/", text: "How It Works" },
+        { href: "/", text: "Register" },
+        { href: "/", text: "Post a Job" },
+        { href: "/", text: "Blog" },
+        { href: "/", text: "FAQ" },
+        { href: "#", text: "Timeproof" },
+      ],
+    },
+    {
+      title: "Workers",
+      links: [
+        { href: "/", text: "How It Works" },
+        { href: "/", text: "Register" },
+        { href: "/", text: "Post your skills" },
+        { href: "/", text: "Job Search" },
+        { href: "/", text: "Life as Virtual Assistant" },
+      ],
+    },
+    {
+      title: "Talented VA's",
+      links: [
+        { href: "/", text: "SEO VA's" },
+        { href: "/", text: "WordPress Experts" },
+        { href: "/", text: "Graphic Designers" },
+        { href: "/", text: "Content Writers" },
+        { href: "/", text: "Bookkeeping VA's" },
+        { href: "/", text: "Social Media Manager" },
+      ],
+    },
+    {
+      title: "Quick Links",
+      links: [
+        { href: "/", text: "FAQ" },
+        { href: "/", text: "Blog" },
+        { href: "/", text: "About Us" },
+        { href: "/", text: "Contact Us" },
+        { href: "/", text: "Privacy Policy" },
+        { href: "/", text: "Terms of Use" },
+      ],
+    },
+  ];
+
   return (
     <footer>
       <section className="top-footer">
         <div className="container k-container">
           <div className="row">
-            <div className="col col-md-3">
-              <h3>Employers</h3>
-              <ul>
-                <li>
-                  <a href="/">How It Works</a>
-                </li>
-                <li>
-                  <a href="/">Register</a>
-                </li>
-                <li>
-                  <a href="/">Post a Job</a>
-                </li>
-                <li>
-                  <a href="/">Blog</a>
-                </li>
-                <li>
-                  <a href="/">FAQ</a>
-                </li>
-                <li>
-                  <a href="#">Timeproof</a>
-                </li>
-              </ul>
-            </div>
-            <div className="col col-md-3">
-              <h3>Workers</h3>
-              <ul>
-                <li>
-                  <a href="/">How It Works</a>
-                </li>
-                <li>
-                  <a href="/">Register</a>
-                </li>
-                <li>
-                  <a href="/">Post your skills</a>
-                </li>
-                <li>
-                  <a href="/">Job Search</a>
-                </li>
-                <li>
-                  <a href="/">Life as Virtual Assistant</a>
-                </li>
-              </ul>
-            </div>
-            <div className="col col-md-3">
-              <h3>Talended VA'S</h3>
-              <ul>
-                <li>
-                  <a href="/">Seo VA's</a>
-                </li>
-                <li>
-                  <a href="/">Wordpress Experts</a>
-                </li>
-                <li>
-                  <a href="/">Graphic Designers</a>
-                </li>
-                <li>
-                  <a href="/">Content Writers</a>
-                </li>
-                <li>
-                  <a href="/">Bookkeeping VA's</a>
-                </li>
-                <li>
-                  <a href="/">Social Media Manager</a>
-                </li>
-              </ul>
-            </div>
-            <div className="col col-md-3">
-              <h3>Quick Links</h3>
-              <ul>
-                <li>
-                  <a href="/">FAQ</a>
-                </li>
-                <li>
-                  <a href="/">Blog</a>
-                </li>
-                <li>
-                  <a href="/">About Us</a>
-                </li>
-                <li>
-                  <a href="/">Contact Us</a>
-                </li>
-                <li>
-                  <a href="/">Privacy Policy</a>
-                </li>
-                <li>
-                  <a href="/">Terms of Use</a>
-                </li>
-              </ul>
-            </div>
+            {columns.map((column, index) => (
+              <FooterColumn
+                key={index}
+                title={column.title}
+                links={column.links}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -102,7 +69,7 @@ const Footer = () => {
           <div className="row align-items-center">
             <div className="col col-md-6">
               <a href="/">
-                <img src={logo} />
+                <img src={logo} alt="Linkage Logo" />
               </a>
             </div>
             <div className="col col-md-6 text-center">

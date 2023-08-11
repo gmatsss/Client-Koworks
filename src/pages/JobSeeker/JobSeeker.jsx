@@ -1,4 +1,49 @@
+import { useState } from "react";
+import { toast } from "react-toastify";
+
+import { useNavigate } from "react-router-dom";
+import { fetchData } from "../../api/api";
 const Jobseek = () => {
+  const navigate = useNavigate();
+  const [jobseek, setJobseek] = useState({
+    fname: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const register = async () => {
+    if (!jobseek.fname) return toast.error("Fullname required");
+    if (!jobseek.email) return toast.error("Email required");
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (!jobseek.email.match(mailformat))
+      return toast.error("Enter Valid Email");
+    if (!jobseek.password) return toast.error("Password required");
+    if (!jobseek.confirmPassword) return toast.error("Confirm you password");
+
+    if (jobseek.password !== jobseek.confirmPassword)
+      return toast.error("Password does not match");
+
+    // Example usage for POST request
+    const postData = {
+      name: jobseek.fname,
+      email: jobseek.email,
+      password: jobseek.password,
+      password_confirmation: jobseek.confirmPassword,
+    };
+    const response = await fetchData(
+      "https://localhost:8001/JobSeekerRoutes/register",
+      "POST",
+      postData
+    );
+    console.log(response);
+
+    if (response.err) return toast.error(response.err);
+
+    toast.success(response.msg);
+    // return navigate("/DJobSeeker");
+  };
+
   return (
     <section className="content-section employer-post-a-job-section light-red-bg">
       <div className="container k-container">
@@ -11,25 +56,21 @@ const Jobseek = () => {
             </p>
 
             <div className="kform-container">
-              <form
-                method="POST"
-                action="https://linkagekoworks.viewourdesign.info/job-seekers"
-                className="kform"
-              >
-                <input
-                  type="hidden"
-                  name="_token"
-                  value="K62eAkPaIxJUlm7cV0nHbvP0wodYDrS9COVQSArz"
-                />
+              <div className="kform">
                 <div className="kform-group">
                   <input
                     type="text"
                     className="kfield full-name red kbox-shadow"
                     name="name"
-                    value=""
+                    value={jobseek.fname}
+                    onChange={(e) => {
+                      setJobseek({
+                        ...jobseek,
+                        fname: e.target.value,
+                      });
+                    }}
                     required
-                    autocomplete="name"
-                    autofocus
+                    autoFocus
                     placeholder="Full Name"
                   />
                 </div>
@@ -38,9 +79,14 @@ const Jobseek = () => {
                     type="email"
                     className="kfield email red kbox-shadow"
                     name="email"
-                    value=""
+                    value={jobseek.email}
+                    onChange={(e) => {
+                      setJobseek({
+                        ...jobseek,
+                        email: e.target.value,
+                      });
+                    }}
                     required
-                    autocomplete="email"
                     placeholder="Email Address"
                   />
                 </div>
@@ -50,29 +96,43 @@ const Jobseek = () => {
                     className="kfield password red kbox-shadow"
                     name="password"
                     required
-                    autocomplete="password"
                     placeholder="Password"
-                    minlength="8"
+                    minLength="8"
+                    value={jobseek.password}
+                    onChange={(e) => {
+                      setJobseek({
+                        ...jobseek,
+                        password: e.target.value,
+                      });
+                    }}
                   />
                   <input
                     type="password"
                     className="kfield cpassword red kbox-shadow"
                     name="password_confirmation"
                     placeholder="Confirm Password"
-                    minlength="8"
+                    minLength="8"
+                    value={jobseek.confirmPassword}
+                    onChange={(e) => {
+                      setJobseek({
+                        ...jobseek,
+                        confirmPassword: e.target.value,
+                      });
+                    }}
                   />
                 </div>
                 <div className="kform-group"></div>
                 <div className="kform-group kform-btn">
-                  <input type="hidden" id="role" name="role" value="employee" />
-                  <input
-                    type="submit"
-                    value="Create An Account"
-                    id="esubmit"
+                  <button
                     className="btn-default-red fn"
-                  />
+                    onClick={() => {
+                      register();
+                    }}
+                  >
+                    Create an Account
+                  </button>
                 </div>
-              </form>
+              </div>
             </div>
 
             <div className="kform-disclaimer text-center">
@@ -82,10 +142,7 @@ const Jobseek = () => {
               </p>
               <p className="have-account">
                 Already have a Linkage.ph Account?
-                <a
-                  href="https://linkagekoworks.viewourdesign.info/login"
-                  className="red u-case"
-                >
+                <a href="/login" className="red u-case">
                   Sign In
                 </a>
               </p>

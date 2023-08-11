@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
 import { Fragment, useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+
 import Logo from "./components/logo";
 import UserButton from "./components/userbutton";
 import NavLink from "./components/links";
-
-import Footer from "../footer/footer";
 
 const Header = () => {
   const [mobileview, setMobileView] = useState(false);
@@ -16,6 +16,18 @@ const Header = () => {
 
   return (
     <div>
+      <ToastContainer
+        position="top-center"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <header>
         <nav
           className="mobile-nav-content nav-overlay"
@@ -84,7 +96,6 @@ const Header = () => {
         </div>
       </header>
       <Outlet />
-      <Footer />
     </div>
   );
 };

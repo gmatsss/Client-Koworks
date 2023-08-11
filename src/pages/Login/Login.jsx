@@ -1,4 +1,42 @@
+import { useState } from "react";
+import { fetchData } from "../../api/api";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContext"; // Adjust the path as needed
+
 const Login = () => {
+  const { getUserData } = useContext(UserContext); // Destructure getUserData from the context
+
+  const navigate = useNavigate();
+  const [jobseek, setJobseek] = useState({
+    email: "",
+    password: "",
+  });
+
+  const login = async () => {
+    const LoginData = {
+      username: jobseek.email,
+      password: jobseek.password,
+    };
+    const Login = await fetchData(
+      "https://localhost:8001/JobSeekerRoutes/login",
+      "POST",
+      LoginData
+    );
+
+    // Check if the response indicates success
+    if (Login && Login.message === "Login Success") {
+      // Call the getUserData function to fetch the user data
+      getUserData();
+      // Navigate to the desired page on success
+      toast.success(Login.message);
+      return navigate("/DJobSeeker");
+    } else {
+      // Alert the user on failure
+      toast.warning(Login.message);
+    }
+  };
   return (
     <section className="content-section login-section">
       <div className="container k-container">
@@ -8,10 +46,7 @@ const Login = () => {
               <div className="card-header">Login</div>
 
               <div className="card-body">
-                <form
-                  method="POST"
-                  action="https://linkagekoworks.viewourdesign.info/login"
-                >
+                <div>
                   <input
                     type="hidden"
                     name="_token"
@@ -19,7 +54,7 @@ const Login = () => {
                   />
                   <div className="form-group row">
                     <label
-                      for="email"
+                      htmlFor="email"
                       className="col-md-4 col-form-label text-md-right"
                     >
                       E-Mail Address
@@ -30,18 +65,21 @@ const Login = () => {
                         id="email"
                         type="email"
                         className="form-control "
-                        name="email"
-                        value=""
+                        value={jobseek.email}
+                        onChange={(e) => {
+                          setJobseek({
+                            ...jobseek,
+                            email: e.target.value,
+                          });
+                        }}
                         required
-                        autocomplete="email"
-                        autofocus
                       />
                     </div>
                   </div>
 
                   <div className="form-group row">
                     <label
-                      for="password"
+                      htmlFor="password"
                       className="col-md-4 col-form-label text-md-right"
                     >
                       Password
@@ -54,7 +92,13 @@ const Login = () => {
                         className="form-control "
                         name="password"
                         required
-                        autocomplete="current-password"
+                        value={jobseek.password}
+                        onChange={(e) => {
+                          setJobseek({
+                            ...jobseek,
+                            password: e.target.value,
+                          });
+                        }}
                       />
                     </div>
                   </div>
@@ -69,7 +113,7 @@ const Login = () => {
                           id="remember"
                         />
 
-                        <label className="form-check-label" for="remember">
+                        <label className="form-check-label" htmlFor="remember">
                           Remember Me
                         </label>
                       </div>
@@ -78,7 +122,13 @@ const Login = () => {
 
                   <div className="form-group row mb-0">
                     <div className="col-md-8 offset-md-4">
-                      <button type="submit" className="btn-default-red">
+                      <button
+                        type="button"
+                        className="btn-default-red"
+                        onClick={() => {
+                          login();
+                        }}
+                      >
                         Login
                       </button>
 
@@ -90,7 +140,7 @@ const Login = () => {
                       </a>
                     </div>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>
