@@ -1,51 +1,159 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { Fragment, useContext } from "react";
-
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../../context/UserContext";
+import { fetchData } from "../../../api/api";
+import { toast } from "react-toastify";
+import React from "react";
 
-const UserButton = (props) => {
+const LoginButton = () => (
+  <ul className="nav-login">
+    <li>
+      <Link className="nav-link" to="/Login">
+        <img
+          src="https://linkagekoworks.viewourdesign.info/imgs/login-icon.png"
+          alt="Log In"
+        />
+        <span>Log In</span>
+      </Link>
+    </li>
+    <li>
+      <Link className="nav-link" to="/Signup">
+        <img
+          src="https://linkagekoworks.viewourdesign.info/imgs/sign-up-icon.png"
+          alt=""
+        />
+        <span>Sign Up</span>
+      </Link>
+    </li>
+  </ul>
+);
+
+const LogoutButton = ({ handleLogout }) => (
+  <Link className="nav-link" onClick={handleLogout}>
+    <img
+      src="https://linkagekoworks.viewourdesign.info/imgs/login-icon.png"
+      alt="Log Out"
+    />
+    <span>Log Out</span>
+  </Link>
+);
+
+const MyAccountMenu = ({ currentUser, handleLogout }) => (
+  <div>
+    <li className="myaccount-label">
+      <Link className="myaccount" to="/DJobSeeker">
+        <img
+          src="https://linkagekoworks.viewourdesign.info/imgs/sign-up-icon.png"
+          alt=""
+        />
+        <span>My Account</span>
+      </Link>
+    </li>
+    <li className="myaccount-menu">
+      <div className="dropdown">
+        <a
+          className="dropdown-toggle"
+          href="#"
+          role="button"
+          id="dropdownMenuLink"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        ></a>
+
+        <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <li>
+            <a className="dropdown-item disabled" href="#">
+              {currentUser.fullname}
+              <span></span>
+            </a>
+          </li>
+          <li>
+            <hr className="dropdown-divider" />
+          </li>
+          <li>
+            <a className="dropdown-item" href="/">
+              <i className="fa fa-user-circle" aria-hidden="true"></i>
+              My Profile
+            </a>
+          </li>
+          <li>
+            <a className="dropdown-item" href="#">
+              <i className="fa fa-file" aria-hidden="true"></i>
+              Job Applications
+            </a>
+          </li>
+          <li>
+            <a className="dropdown-item" href="/">
+              <i className="fa fa-floppy-o" aria-hidden="true"></i>
+              Pinned Jobs
+            </a>
+          </li>
+          <li>
+            <a className="dropdown-item" href="/">
+              <i className="fa fa-cogs" aria-hidden="true"></i>
+              Edit Account
+            </a>
+          </li>
+          <li>
+            <hr className="dropdown-divider" />
+          </li>
+          <li className="logout">
+            <Link className="nav-link" onClick={handleLogout}>
+              <span>Log Out</span>
+            </Link>
+          </li>
+        </ul>
+      </div>
+    </li>
+  </div>
+);
+
+const UserButton = React.memo((props) => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
+  const navigate = useNavigate(); // Get the navigate function using the useNavigate hook
+
   const handleClick = () => {
     props.onClick(true);
   };
 
-  const handleLogout = () => {
-    // Perform any necessary logout logic here, such as clearing tokens
-    setCurrentUser(null); // Clear the current user from context
+  const handleLogout = async () => {
+    try {
+      const response = await fetchData(
+        "https://localhost:8001/JobSeekerRoutes/logoutjobseek",
+        "POST"
+      );
+
+      if (response.message === "Successfully logged out.") {
+        setCurrentUser(null); // Clear the current user from context
+        toast.success(response.message);
+        return navigate("/");
+      } else {
+        console.error("Unexpected response during logout:", response);
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
   };
-  console.log(currentUser);
+
   return (
     <div className="col col-md-3 px-0 text-right h-smenu ">
       <ul className="nav-login">
         <li>
           {currentUser ? (
-            <Link className="nav-link" onClick={handleLogout}>
-              <img
-                src="https://linkagekoworks.viewourdesign.info/imgs/login-icon.png"
-                alt="Log In"
-              />
-              <span>Log Out</span>
-            </Link>
+            <LogoutButton handleLogout={handleLogout} />
           ) : (
-            <Link className="nav-link" to="/Login">
-              <img
-                src="https://linkagekoworks.viewourdesign.info/imgs/login-icon.png"
-                alt="Log In"
-              />
-              <span>Log In</span>
-            </Link>
+            <LoginButton />
           )}
         </li>
         <li>
-          <Link className="nav-link" to="/Signup">
-            <img
-              src="https://linkagekoworks.viewourdesign.info/imgs/sign-up-icon.png"
-              alt=""
+          {currentUser && (
+            <MyAccountMenu
+              currentUser={currentUser}
+              handleLogout={handleLogout}
             />
-            <span>Sign Up</span>
-          </Link>
+          )}
         </li>
       </ul>
       <FontAwesomeIcon
@@ -55,6 +163,6 @@ const UserButton = (props) => {
       />
     </div>
   );
-};
+});
 
 export default UserButton;

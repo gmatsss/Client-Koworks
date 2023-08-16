@@ -36,15 +36,17 @@ export async function fetchData(
       case 201: // Created
         return responseData;
       case 400: // Bad Request
-        throw new Error(responseData.error || "Bad Request");
+        return responseData;
       case 401: // Unauthorized
         return responseData;
       case 403: // Forbidden
-        throw new Error(responseData.error || "Forbidden");
+        return responseData;
       case 404: // Not Found
-        throw new Error(responseData.error || "Not Found");
+        return responseData;
+      case 409: // Internal Server Error
+        return responseData;
       case 500: // Internal Server Error
-        throw new Error(responseData.error || "Internal Server Error");
+        return responseData;
       default:
         throw new Error(responseData.error || "An unexpected error occurred");
     }

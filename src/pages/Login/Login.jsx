@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext"; // Adjust the path as needed
+import useDebounce from "../../api/debounce";
 
 const Login = () => {
   const { getUserData } = useContext(UserContext); // Destructure getUserData from the context
@@ -14,7 +15,7 @@ const Login = () => {
     password: "",
   });
 
-  const login = async () => {
+  const debouncedRequest = useDebounce(async () => {
     const LoginData = {
       username: jobseek.email,
       password: jobseek.password,
@@ -28,15 +29,24 @@ const Login = () => {
     // Check if the response indicates success
     if (Login && Login.message === "Login Success") {
       // Call the getUserData function to fetch the user data
-      getUserData();
+      await getUserData();
       // Navigate to the desired page on success
       toast.success(Login.message);
       return navigate("/DJobSeeker");
     } else {
-      // Alert the user on failure
       toast.warning(Login.message);
     }
+  }, 500); // 500ms delay
+
+  const login = () => {
+    debouncedRequest();
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+    await login(); // Call the login function
+  };
+
   return (
     <section className="content-section login-section">
       <div className="container k-container">
@@ -46,7 +56,7 @@ const Login = () => {
               <div className="card-header">Login</div>
 
               <div className="card-body">
-                <div>
+                <form onSubmit={handleSubmit}>
                   <input
                     type="hidden"
                     name="_token"
@@ -102,45 +112,49 @@ const Login = () => {
                       />
                     </div>
                   </div>
+                  <div>
+                    <div className="form-group row">
+                      <div className="col-md-6 offset-md-4">
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            name="remember"
+                            id="remember"
+                          />
 
-                  <div className="form-group row">
-                    <div className="col-md-6 offset-md-4">
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          name="remember"
-                          id="remember"
-                        />
+                          <label
+                            className="form-check-label"
+                            htmlFor="remember"
+                          >
+                            Remember Me
+                          </label>
+                        </div>
+                      </div>
+                    </div>
 
-                        <label className="form-check-label" htmlFor="remember">
-                          Remember Me
-                        </label>
+                    <div className="form-group row mb-0">
+                      <div className="col-md-8 offset-md-4">
+                        <button
+                          type="submit"
+                          className="btn-default-red"
+                          onClick={() => {
+                            login();
+                          }}
+                        >
+                          Login
+                        </button>
+
+                        <a
+                          className="btn btn-link"
+                          href="https://linkagekoworks.viewourdesign.info/password/reset"
+                        >
+                          Forgot Your Password?
+                        </a>
                       </div>
                     </div>
                   </div>
-
-                  <div className="form-group row mb-0">
-                    <div className="col-md-8 offset-md-4">
-                      <button
-                        type="button"
-                        className="btn-default-red"
-                        onClick={() => {
-                          login();
-                        }}
-                      >
-                        Login
-                      </button>
-
-                      <a
-                        className="btn btn-link"
-                        href="https://linkagekoworks.viewourdesign.info/password/reset"
-                      >
-                        Forgot Your Password?
-                      </a>
-                    </div>
-                  </div>
-                </div>
+                </form>
               </div>
             </div>
           </div>

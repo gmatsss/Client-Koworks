@@ -1,3 +1,5 @@
+import React from "react";
+import { Link } from "react-router-dom";
 import DashboardIcon from "../../../../imgs/icon-dashboard.png";
 import EditAccount from "../../../../imgs/icon-edit-account-b.png";
 import EditProfile from "../../../../imgs/icon-edit-account.png";
@@ -17,72 +19,58 @@ const Sidebar = () => (
     </div>
     <div className="jobseekers-menu dash-menu">
       <ul>
-        <li>
-          <span>
-            <img src={DashboardIcon} alt="Dashboard" />
-          </span>
-          <a href="/" className="u-case f-20 fn blue">
-            Dashboard
-          </a>
-        </li>
-        <li>
-          <span>
-            <img src={EditAccount} alt="Edit Account" />
-          </span>
-          <a href="/" className="u-case f-20 fn blue">
-            Edit Account
-          </a>
-        </li>
-        <li>
-          <span>
-            <img src={EditProfile} alt="Edit Profile" />
-          </span>
-          <a href="/" className="u-case f-20 fn blue">
-            Edit Profile
-          </a>
-        </li>
-        <li>
-          <span>
-            <img src={SkillIcon} alt="Skills" />
-          </span>
-          <a href="/" className="u-case f-20 fn blue">
-            Skills
-          </a>
-        </li>
-        <li>
-          <span>
-            <img src={VerifyIcon} alt="Verify Your Profile" />
-          </span>
-          <a href="/" className="u-case f-20 fn blue">
-            Verify your Profile
-          </a>
-        </li>
-        <li>
-          <span>
-            <img src={SearchIcon} alt="Search Jobs" />
-          </span>
-          <a href="/" className="u-case f-20 fn blue">
-            Search Jobs
-          </a>
-        </li>
-        <li>
-          <span>
-            <img src={LogoutIcon} alt="Log Out" />
-          </span>
-          <a href="/" className="u-case f-20 fn blue">
-            Log Out
-          </a>
-        </li>
+        <MenuItem
+          icon={DashboardIcon}
+          altText="Dashboard"
+          link="/DJobSeeker"
+          text="Dashboard"
+        />
+        <MenuItem
+          icon={EditAccount}
+          altText="Edit Account"
+          link="/DJobSeeker/UpdateAccountForm"
+          text="Edit Account"
+        />
+        <MenuItem
+          icon={EditProfile}
+          altText="Edit Profile"
+          link="/"
+          text="Edit Profile"
+        />
+        <MenuItem icon={SkillIcon} altText="Skills" link="/" text="Skills" />
+        <MenuItem
+          icon={VerifyIcon}
+          altText="Verify Your Profile"
+          link="/"
+          text="Verify your Profile"
+        />
+        <MenuItem
+          icon={SearchIcon}
+          altText="Search Jobs"
+          link="/"
+          text="Search Jobs"
+        />
+        <MenuItem icon={LogoutIcon} altText="Log Out" link="/" text="Log Out" />
       </ul>
-      <a
-        href="/"
-        target="_blank"
+      <Link
+        to="/"
         className="btn-default-red fn small-btn text-center mtop-20 view-profile"
       >
         Create Profile
-      </a>
+      </Link>
     </div>
   </div>
+);
+
+const MenuItem = ({ icon, altText, link, text }) => (
+  <li>
+    <span>
+      <img src={icon} alt={altText} />
+    </span>
+    <Link to={link} className="u-case f-20 fn blue">
+      {text}
+    </Link>
+  </li>
 );
 
 export default Sidebar;

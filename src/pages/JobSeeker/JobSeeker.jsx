@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { toast } from "react-toastify";
+
+import { UserContext } from "../../context/UserContext"; // Adjust the path as needed
 
 import { useNavigate } from "react-router-dom";
 import { fetchData } from "../../api/api";
+import useDebounce from "../../api/debounce";
+
 const Jobseek = () => {
+  const { getUserData } = useContext(UserContext);
   const navigate = useNavigate();
   const [jobseek, setJobseek] = useState({
     fname: "",
@@ -12,37 +17,92 @@ const Jobseek = () => {
     confirmPassword: "",
   });
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setJobseek({
+      ...jobseek,
+      [name]: value,
+    });
+  };
+
+  // Validation functions
+  const isFieldEmpty = (field, message) => {
+    if (!field) {
+      toast.error(message);
+      return true;
+    }
+    return false;
+  };
+
+  const isValidEmail = (email) => {
+    const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (!email.match(mailformat)) {
+      toast.error("Enter Valid Email");
+      return false;
+    }
+    return true;
+  };
+
+  const arePasswordsMatching = (password, confirmPassword) => {
+    if (password !== confirmPassword) {
+      toast.error("Password does not match");
+      return false;
+    }
+    return true;
+  };
+
+  const validateForm = () => {
+    if (
+      isFieldEmpty(jobseek.fname, "Fullname required") ||
+      isFieldEmpty(jobseek.email, "Email required") ||
+      !isValidEmail(jobseek.email) ||
+      isFieldEmpty(jobseek.password, "Password required") ||
+      isFieldEmpty(jobseek.confirmPassword, "Confirm your password") ||
+      !arePasswordsMatching(jobseek.password, jobseek.confirmPassword)
+    ) {
+      return false;
+    }
+    return true;
+  };
+
+  // Registration function
   const register = async () => {
-    if (!jobseek.fname) return toast.error("Fullname required");
-    if (!jobseek.email) return toast.error("Email required");
-    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (!jobseek.email.match(mailformat))
-      return toast.error("Enter Valid Email");
-    if (!jobseek.password) return toast.error("Password required");
-    if (!jobseek.confirmPassword) return toast.error("Confirm you password");
+    if (!validateForm()) return;
 
-    if (jobseek.password !== jobseek.confirmPassword)
-      return toast.error("Password does not match");
-
-    // Example usage for POST request
-    const postData = {
+    const registrationData = {
       name: jobseek.fname,
       email: jobseek.email,
       password: jobseek.password,
       password_confirmation: jobseek.confirmPassword,
     };
+
     const response = await fetchData(
       "https://localhost:8001/JobSeekerRoutes/register",
       "POST",
-      postData
+      registrationData
     );
-    console.log(response);
 
     if (response.err) return toast.error(response.err);
 
-    toast.success(response.msg);
-    // return navigate("/DJobSeeker");
+    const loginCredentials = {
+      username: jobseek.email,
+      password: jobseek.password,
+    };
+
+    const loginResponse = await fetchData(
+      "https://localhost:8001/JobSeekerRoutes/login",
+      "POST",
+      loginCredentials
+    );
+
+    if (loginResponse && loginResponse.message === "Login Success") {
+      await getUserData();
+      toast.success(response.msg);
+      return navigate("/AccountCreation");
+    }
   };
+
+  const debouncedRegister = useDebounce(register, 300); // 300ms delay as an example
 
   return (
     <section className="content-section employer-post-a-job-section light-red-bg">
@@ -61,14 +121,9 @@ const Jobseek = () => {
                   <input
                     type="text"
                     className="kfield full-name red kbox-shadow"
-                    name="name"
+                    name="fname"
                     value={jobseek.fname}
-                    onChange={(e) => {
-                      setJobseek({
-                        ...jobseek,
-                        fname: e.target.value,
-                      });
-                    }}
+                    onChange={handleInputChange}
                     required
                     autoFocus
                     placeholder="Full Name"
@@ -80,12 +135,7 @@ const Jobseek = () => {
                     className="kfield email red kbox-shadow"
                     name="email"
                     value={jobseek.email}
-                    onChange={(e) => {
-                      setJobseek({
-                        ...jobseek,
-                        email: e.target.value,
-                      });
-                    }}
+                    onChange={handleInputChange}
                     required
                     placeholder="Email Address"
                   />
@@ -99,26 +149,16 @@ const Jobseek = () => {
                     placeholder="Password"
                     minLength="8"
                     value={jobseek.password}
-                    onChange={(e) => {
-                      setJobseek({
-                        ...jobseek,
-                        password: e.target.value,
-                      });
-                    }}
+                    onChange={handleInputChange}
                   />
                   <input
                     type="password"
                     className="kfield cpassword red kbox-shadow"
-                    name="password_confirmation"
+                    name="confirmPassword"
                     placeholder="Confirm Password"
                     minLength="8"
                     value={jobseek.confirmPassword}
-                    onChange={(e) => {
-                      setJobseek({
-                        ...jobseek,
-                        confirmPassword: e.target.value,
-                      });
-                    }}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="kform-group"></div>
@@ -126,7 +166,7 @@ const Jobseek = () => {
                   <button
                     className="btn-default-red fn"
                     onClick={() => {
-                      register();
+                      debouncedRegister();
                     }}
                   >
                     Create an Account

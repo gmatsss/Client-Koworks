@@ -549,6 +549,13 @@ li.logout a img {
     display: block;
     transform: translate(0px, 28px);
 }
+.myaccount-menu:hover .dropdown-menu {
+    display: block;
+  }
+
+  .myaccount-label:hover .dropdown-menu {
+    display: block;
+  }
 .sub-menu {
     display: none;
     position: absolute;
@@ -626,20 +633,13 @@ nav > ul > li:hover .sub-menu {
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    position: relative;
+  
     padding-top: 143px;
     padding-bottom: 5px;
-}
-.edit-account.banner-section-sa {
-    background-image: url(./imgs/edit-account-banner.jpg);
-}
-.banner-profile {
-   background-image: url(./imgs/jobseekers-banner-bg.png);
-}
-.verify-banner {
-    background-image: url(./imgs/verify-banner.png);
+
 }
 .banner-section-sa:before {
+
     content: "";
     width: 100%;
     height: 100%;
@@ -665,7 +665,24 @@ nav > ul > li:hover .sub-menu {
         rgba(234, 38, 39, 1) 100%
     );
     mix-blend-mode: multiply;
+    position: relative;//just remove this
 }
+.banner-section-sa h1,
+.banner-section-sa p {
+    color: rgb(0, 0, 0); /* Set the text color to white */
+}
+
+.edit-account.banner-section-sa {
+    background-image: url(./imgs/edit-account-banner.jpg);
+}
+
+.banner-profile {
+   background-image: url(./imgs/jobseekers-banner-bg.png);
+}
+.verify-banner {
+    background-image: url(./imgs/verify-banner.png);
+}
+
 .ck-content {
     min-height: 300px;
 }
