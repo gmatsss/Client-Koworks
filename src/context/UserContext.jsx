@@ -1,46 +1,71 @@
-import { createContext, useEffect, useState, useMemo } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { fetchData } from "../api/api";
 
-export const UserContext = createContext({
-  currentUser: null,
-  setCurrentUser: () => null,
-  getUserData: () => null,
-  fetchUserPromise: null, // Add this line
-  loading: true,
-});
+const UserContext = createContext();
 
-export const UserProvider = ({ children }) => {
+const UserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
-  const [fetchUserPromise, setFetchUserPromise] = useState(null); // Add this line
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchUser = async () => {
+    try {
+      setLoading(true);
+      const data = await fetchData("user/getjobseek");
+      setCurrentUser(data.user);
+      setLoading(false);
+    } catch (err) {
+      setError(err);
+      setLoading(false);
+    }
+  };
+
+  const login = async (email, password) => {
+    try {
+      const LoginData = {
+        email: email,
+        password: password,
+      };
+      const Login = await fetchData("User/login", "POST", LoginData);
+
+      if (Login && Login.message === "Login successful") {
+        await fetchUser(); // Fetch the user data after successful login
+        return { success: true, message: Login.message };
+      } else {
+        return { success: false, message: Login.message };
+      }
+    } catch (err) {
+      setError(err);
+      return { success: false, message: err.message };
+    }
+  };
+
+  const logout = async () => {
+    try {
+      const response = await fetchData("User/logoutjobseek", "POST");
+      if (response.message === "Successfully logged out.") {
+        setCurrentUser(null); // Clear the current user from context
+        return { success: true, message: response.message };
+      } else {
+        return { success: false, message: response.message };
+      }
+    } catch (err) {
+      setError(err);
+      return { success: false, message: err.message };
+    }
+  };
 
   useEffect(() => {
-    getUserData();
-  }, []); // Added currentUser as a dependency
+    fetchUser();
+  }, []);
 
-  async function getUserData() {
-    const promise = fetchData(
-      "https://localhost:8001/JobSeekerRoutes/getjobseek"
-    );
-    setFetchUserPromise(promise); // Set the promise
-
-    try {
-      const res = await promise;
-      setCurrentUser(res.user);
-    } catch (error) {
-      console.log(error);
-    } finally {
-    }
-  }
-
-  const value = useMemo(
-    () => ({
-      currentUser,
-      setCurrentUser,
-      getUserData,
-      fetchUserPromise, // Add this line
-    }),
-    [currentUser, fetchUserPromise] // Add fetchUserPromise as a dependency
+  return (
+    <UserContext.Provider
+      value={{ currentUser, loading, error, login, logout, fetchUser }} // Expose fetchUser so it can be used elsewhere
+    >
+      {children}
+    </UserContext.Provider>
   );
-
-  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
+
+export { UserContext, UserProvider };

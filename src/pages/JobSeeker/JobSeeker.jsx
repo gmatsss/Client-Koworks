@@ -5,10 +5,10 @@ import { UserContext } from "../../context/UserContext"; // Adjust the path as n
 
 import { useNavigate } from "react-router-dom";
 import { fetchData } from "../../api/api";
-import useDebounce from "../../api/debounce";
 
 const Jobseek = () => {
-  const { getUserData } = useContext(UserContext);
+  const { login } = useContext(UserContext);
+
   const navigate = useNavigate();
   const [jobseek, setJobseek] = useState({
     fname: "",
@@ -70,39 +70,39 @@ const Jobseek = () => {
     if (!validateForm()) return;
 
     const registrationData = {
-      name: jobseek.fname,
+      fullname: jobseek.fname,
       email: jobseek.email,
       password: jobseek.password,
       password_confirmation: jobseek.confirmPassword,
     };
 
-    const response = await fetchData(
-      "https://localhost:8001/JobSeekerRoutes/register",
-      "POST",
-      registrationData
-    );
+    const response = await fetchData("User/register", "POST", registrationData);
 
-    if (response.err) return toast.error(response.err);
+    console.log(response);
 
-    const loginCredentials = {
-      username: jobseek.email,
-      password: jobseek.password,
-    };
-
-    const loginResponse = await fetchData(
-      "https://localhost:8001/JobSeekerRoutes/login",
-      "POST",
-      loginCredentials
-    );
-
-    if (loginResponse && loginResponse.message === "Login Success") {
-      await getUserData();
-      toast.success(response.msg);
-      return navigate("/AccountCreation");
+    // Check if the registration was successful
+    if (response) {
+      if (!response.success) {
+        // Check for specific messages or conditions
+        if (response.message === "User with this email already exists") {
+          toast.warning(response.message);
+        } else {
+          toast.error(response.message || "Registration failed.");
+        }
+      } else {
+        toast.success(response.message || "Registration successful.");
+        // Automatically login the user after successful registration
+        const loginResponse = await login(jobseek.email, jobseek.password);
+        if (loginResponse && loginResponse.success) {
+          navigate("/AccountCreation");
+        } else {
+          toast.error(loginResponse.message || "Error during automatic login.");
+        }
+      }
+    } else {
+      toast.error("No response from server.");
     }
   };
-
-  const debouncedRegister = useDebounce(register, 300); // 300ms delay as an example
 
   return (
     <section className="content-section employer-post-a-job-section light-red-bg">
@@ -166,7 +166,7 @@ const Jobseek = () => {
                   <button
                     className="btn-default-red fn"
                     onClick={() => {
-                      debouncedRegister();
+                      register();
                     }}
                   >
                     Create an Account

@@ -633,9 +633,9 @@ nav > ul > li:hover .sub-menu {
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-  
     padding-top: 143px;
     padding-bottom: 5px;
+    position: relative;
 
 }
 .banner-section-sa:before {
@@ -665,11 +665,12 @@ nav > ul > li:hover .sub-menu {
         rgba(234, 38, 39, 1) 100%
     );
     mix-blend-mode: multiply;
-    position: relative;//just remove this
+    //position: relative;//just remove this
 }
 .banner-section-sa h1,
 .banner-section-sa p {
-    color: rgb(0, 0, 0); /* Set the text color to white */
+    position: relative;
+    color: rgb(255, 255, 255); /* Set the text color to white */
 }
 
 .edit-account.banner-section-sa {
@@ -1596,6 +1597,7 @@ input[type="radio"]:checked ~ .check:before {
     margin-top: -180px;
     display: block;
     text-align: center;
+    position: relative;
 }
 .dash-img {
     display: inline-block;
@@ -3622,3 +3624,19 @@ ul.pagination {
 .nav-link:active{
   color: #ea2627;
 }
+
+.fas.fa-arrow-right {
+    font-size: 15px;
+    vertical-align: middle;
+    color: #333; /* or any color you prefer */
+    margin-top: 15px;
+}
+
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 600px; // Set this to whatever you consider "medium"
+    width: 100%;
+  }
+  

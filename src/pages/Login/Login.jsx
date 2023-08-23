@@ -1,13 +1,11 @@
 import { useState } from "react";
-import { fetchData } from "../../api/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext"; // Adjust the path as needed
-import useDebounce from "../../api/debounce";
 
 const Login = () => {
-  const { getUserData } = useContext(UserContext); // Destructure getUserData from the context
+  const { login } = useContext(UserContext); // Destructure login from the context
 
   const navigate = useNavigate();
   const [jobseek, setJobseek] = useState({
@@ -15,36 +13,17 @@ const Login = () => {
     password: "",
   });
 
-  const debouncedRequest = useDebounce(async () => {
-    const LoginData = {
-      username: jobseek.email,
-      password: jobseek.password,
-    };
-    const Login = await fetchData(
-      "https://localhost:8001/JobSeekerRoutes/login",
-      "POST",
-      LoginData
-    );
-
-    // Check if the response indicates success
-    if (Login && Login.message === "Login Success") {
-      // Call the getUserData function to fetch the user data
-      await getUserData();
-      // Navigate to the desired page on success
-      toast.success(Login.message);
-      return navigate("/DJobSeeker");
-    } else {
-      toast.warning(Login.message);
-    }
-  }, 500); // 500ms delay
-
-  const login = () => {
-    debouncedRequest();
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
-    await login(); // Call the login function
+
+    const result = await login(jobseek.email, jobseek.password);
+
+    if (result.success) {
+      toast.success(result.message);
+      navigate("/DJobSeeker");
+    } else {
+      toast.warning(result.message);
+    }
   };
 
   return (
@@ -65,7 +44,7 @@ const Login = () => {
                   <div className="form-group row">
                     <label
                       htmlFor="email"
-                      className="col-md-4 col-form-label text-md-right"
+                      className="col-md-4 col-form-label text-end"
                     >
                       E-Mail Address
                     </label>
@@ -87,10 +66,10 @@ const Login = () => {
                     </div>
                   </div>
 
-                  <div className="form-group row">
+                  <div className="form-group row mt-3">
                     <label
                       htmlFor="password"
-                      className="col-md-4 col-form-label text-md-right"
+                      className="col-md-4 col-form-label text-end"
                     >
                       Password
                     </label>
@@ -113,7 +92,7 @@ const Login = () => {
                     </div>
                   </div>
                   <div>
-                    <div className="form-group row">
+                    <div className="form-group row mt-3">
                       <div className="col-md-6 offset-md-4">
                         <div className="form-check">
                           <input
@@ -133,15 +112,9 @@ const Login = () => {
                       </div>
                     </div>
 
-                    <div className="form-group row mb-0">
+                    <div className="form-group row mb-0 mt-3">
                       <div className="col-md-8 offset-md-4">
-                        <button
-                          type="submit"
-                          className="btn-default-red"
-                          onClick={() => {
-                            login();
-                          }}
-                        >
+                        <button type="submit" className="btn-default-red">
                           Login
                         </button>
 

@@ -4,7 +4,7 @@ import { fetchData } from "../../../../api/api"; // Adjust the path to your fetc
 import { toast } from "react-toastify";
 
 const UpdateAccountForm = () => {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, fetchUser } = useContext(UserContext);
   const [email, setEmail] = useState(currentUser.email || "");
   const [fullName, setFullName] = useState(currentUser.fullname || "");
   const [currentPassword, setCurrentPassword] = useState("");
@@ -30,7 +30,7 @@ const UpdateAccountForm = () => {
     }
 
     const data = {
-      currentEmail: currentUser.email,
+      _id: currentUser._id,
       email,
       fullname: fullName,
       currentPassword,
@@ -39,16 +39,13 @@ const UpdateAccountForm = () => {
     };
 
     try {
-      const response = await fetchData(
-        "https://localhost:8001/JobSeekerRoutes/updateJSeeker",
-        "POST",
-        data
-      );
+      const response = await fetchData("User/updateJSeeker", "POST", data);
 
       if (response && response.success) {
-        toast.success(response.msg || "Account updated successfully!");
+        toast.success(response.message);
+        fetchUser();
       } else {
-        toast.error(response.err || "Failed to update account.");
+        toast.error(response.message || "Failed to update account.");
       }
     } catch (error) {
       toast.error("An error occurred while updating the account.");

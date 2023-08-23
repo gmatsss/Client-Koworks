@@ -111,29 +111,23 @@ const MyAccountMenu = ({ currentUser, handleLogout }) => (
 );
 
 const UserButton = React.memo((props) => {
-  const { currentUser, setCurrentUser } = useContext(UserContext);
-  const navigate = useNavigate(); // Get the navigate function using the useNavigate hook
+  const { currentUser, logout } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const handleClick = () => {
     props.onClick(true);
   };
 
   const handleLogout = async () => {
-    try {
-      const response = await fetchData(
-        "https://localhost:8001/JobSeekerRoutes/logoutjobseek",
-        "POST"
-      );
-
-      if (response.message === "Successfully logged out.") {
-        setCurrentUser(null); // Clear the current user from context
-        toast.success(response.message);
-        return navigate("/");
-      } else {
-        console.error("Unexpected response during logout:", response);
-      }
-    } catch (error) {
-      console.error("Error during logout:", error);
+    const result = await logout();
+    if (result.success) {
+      toast.success(result.message);
+      navigate("/"); // Navigate to the root path
+    } else if (!currentUser) {
+      console.log("User is already logged out.");
+      navigate("/"); // Navigate to the root path
+    } else {
+      console.error("Unexpected response during logout:", result.message);
     }
   };
 

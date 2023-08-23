@@ -1,16 +1,20 @@
+const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
+
 export async function fetchData(
-  url,
+  endpoint,
   method = "GET",
   data = null,
   useFormData = false
 ) {
+  const url = `${API_ENDPOINT}${endpoint}`;
+
   const options = {
     method: method,
     headers: {
-      Accept: "application/json", // Added this line
+      Accept: "application/json",
       "Content-Type": useFormData ? undefined : "application/json",
     },
-    credentials: "include", // Include credentials like cookies with the request
+    credentials: "include",
   };
 
   if (data) {
@@ -32,19 +36,12 @@ export async function fetchData(
 
     switch (response.status) {
       case 200: // OK
-        return responseData;
       case 201: // Created
-        return responseData;
       case 400: // Bad Request
-        return responseData;
       case 401: // Unauthorized
-        return responseData;
       case 403: // Forbidden
-        return responseData;
       case 404: // Not Found
-        return responseData;
-      case 409: // Internal Server Error
-        return responseData;
+      case 409: // Conflict
       case 500: // Internal Server Error
         return responseData;
       default:
@@ -52,6 +49,6 @@ export async function fetchData(
     }
   } catch (error) {
     console.log(error);
-    // Re-throw the error so it can be handled by the calling code
+    throw error; // Re-throw the error so it can be handled by the calling code
   }
 }
