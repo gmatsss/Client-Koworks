@@ -74,6 +74,7 @@ const Jobseek = () => {
       email: jobseek.email,
       password: jobseek.password,
       password_confirmation: jobseek.confirmPassword,
+      role: "employee",
     };
 
     const response = await fetchData("User/register", "POST", registrationData);

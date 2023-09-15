@@ -6,19 +6,19 @@ import { UserContext } from "../../../context/UserContext";
 import EmployeeDashboard from "./components/EmployeeDashboard";
 import UpdateAccountForm from "./UpdateAccountForm/UpdateAccountForm";
 import UpdateEmployeeProfile from "./UpdateEmployeeProfile/UpdateEmployeeProfile";
-import book from "../../../imgs/book.png";
+
+import BookSection from "./components/booksection";
 
 const DJobSeeker = () => {
   const { currentUser } = useContext(UserContext);
-  const location = useLocation(); // Use the hook
+  const jobTitle =
+    currentUser?.employeeProfile?.job_title || "No job title yet";
+  const location = useLocation();
 
   return (
     <div className="container-fluid">
       <div className="row">
-        <ProfileBanner
-          name={currentUser.fullname}
-          jobTitle={currentUser.role}
-        />
+        <ProfileBanner name={currentUser.fullname} jobTitle={jobTitle} />
       </div>
       <div className="row">
         <section className="content-section white-bg">
@@ -46,33 +46,7 @@ const DJobSeeker = () => {
       </div>
 
       {/* Conditionally render the booksection */}
-      {location.pathname.includes("UpdateEmployeeProfile") && (
-        <div className="row booksection">
-          <section class="content-section book-section">
-            <div class="container k-container">
-              <div class="row align-items-center">
-                <div class="col-5 book-content">
-                  <span>THE ULTIMATE</span>
-                  <h2 class="book-title">
-                    <span>SALARY</span>
-                    <span>GUIDE</span>
-                  </h2>
-                  <p>
-                    FOR HIRING FILIPINO <br />
-                    VIRTUAL ASSISTANTS
-                  </p>
-                  <a href="#" class="btn-default-blue">
-                    DOWNLOAD PDF
-                  </a>
-                </div>
-                <div class="col-7 book-img">
-                  <img src={book} alt="Jobseekers Name" />
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
-      )}
+      {location.pathname.includes("UpdateEmployeeProfile") && <BookSection />}
     </div>
   );
 };

@@ -43,7 +43,10 @@ const LogoutButton = ({ handleLogout }) => (
 const MyAccountMenu = ({ currentUser, handleLogout }) => (
   <div>
     <li className="myaccount-label">
-      <Link className="myaccount" to="/DJobSeeker">
+      <Link
+        className="myaccount"
+        to={currentUser.role === "employer" ? "/DEmployer" : "/DJobSeeker"}
+      >
         <img
           src="https://linkagekoworks.viewourdesign.info/imgs/sign-up-icon.png"
           alt=""
@@ -73,28 +76,42 @@ const MyAccountMenu = ({ currentUser, handleLogout }) => (
             <hr className="dropdown-divider" />
           </li>
           <li>
-            <a className="dropdown-item" href="/">
+            <Link
+              className="dropdown-item"
+              to={
+                currentUser.role === "employer"
+                  ? "/DEmployer/profile"
+                  : "/DJobSeeker/profile"
+              }
+            >
               <i className="fa fa-user-circle" aria-hidden="true"></i>
               My Profile
-            </a>
+            </Link>
           </li>
           <li>
-            <a className="dropdown-item" href="#">
+            <Link className="dropdown-item" to="/job-applications">
               <i className="fa fa-file" aria-hidden="true"></i>
               Job Applications
-            </a>
+            </Link>
           </li>
           <li>
-            <a className="dropdown-item" href="/">
+            <Link className="dropdown-item" to="/pinned-jobs">
               <i className="fa fa-floppy-o" aria-hidden="true"></i>
               Pinned Jobs
-            </a>
+            </Link>
           </li>
           <li>
-            <a className="dropdown-item" href="/">
+            <Link
+              className="dropdown-item"
+              to={
+                currentUser.role === "employer"
+                  ? "/DEmployer/edit-account"
+                  : "/DJobSeeker/edit-account"
+              }
+            >
               <i className="fa fa-cogs" aria-hidden="true"></i>
               Edit Account
-            </a>
+            </Link>
           </li>
           <li>
             <hr className="dropdown-divider" />

@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { Navigate } from "react-router-dom"; // Assuming you're using react-router v6
 
 // Components
@@ -33,26 +33,38 @@ import { DotSpinner } from "@uiball/loaders";
 import NotFound from "./pages/NotFound/NotFound";
 import SkillRatingForm from "./pages/Dashboard/DJobSeeker/skill/SkillRatingForm";
 import UpdateSkill from "./pages/Dashboard/DJobSeeker/updateskill/UpdateSkill";
+import ViewProfile from "./pages/Dashboard/DJobSeeker/ViewProfile/ViewProfile";
+import BookSection from "./pages/Dashboard/DJobSeeker/components/booksection";
+import VerificationComponent from "./pages/Dashboard/DJobSeeker/VerifyProfile/VerificationComponent";
+import ProfileVerification from "./pages/Dashboard/DJobSeeker/VerifyProfile/ProfileVerification/ProfileVerification";
+import VerifyAddressComponent from "./pages/Dashboard/DJobSeeker/VerifyProfile/VerifyAddress/VerifyAddressComponent";
+import PhoneVerification from "./pages/Dashboard/DJobSeeker/VerifyProfile/PhoneVerification/PhoneVerification";
+import DEmployer from "./pages/Dashboard/DEmployer/DEmployer";
 
 function App() {
+  const location = useLocation(); // Use the hook
   const { currentUser, loading, fetchUser } = useContext(UserContext);
 
   useOnce(() => {
     fetchUser();
   });
 
-  function ProtectedRoute({ children }) {
+  function ProtectedRoute({ children, role }) {
     if (loading) {
       return (
         <div className="spinner-container">
           <DotSpinner size={40} speed={0.9} color="black" />
         </div>
       );
-      // Return null while loading
     }
 
     if (!currentUser) {
       return <Navigate to="/Login" />;
+    }
+
+    // Check if the current user has the required role
+    if (role && currentUser.role !== role) {
+      return <Navigate to="/" />;
     }
 
     return children;
@@ -60,84 +72,128 @@ function App() {
 
   return (
     <div>
+      <Header />
       <Routes>
-        <Route path="/" element={<Header />}>
-          <Route index element={<Home />} />
-          <Route path="/HowItWorks" element={<HowItWorks />}>
-            <Route path="employer" element={<Employer />} />
-            <Route path="jobseeker" element={<JobSeeker />} />
-          </Route>
-          <Route path="/PostAJob" element={<PostAJob />} />
-          <Route path="/Jobseek" element={<Jobseek />} />
-          <Route path="/Pricing" element={<Pricing />} />
-          <Route path="/Resources" element={<Resources />} />
-          <Route path="/Login" element={<Login />} />
-          <Route path="/Signup" element={<SignUp />} />
-          <Route path="/SearchJob" element={<SearchJob />} />
-          <Route path="*" element={<NotFound />} />
-          {/* Commented out protected routes for adjustment later */}
-
-          <Route
-            path="/AccountCreation"
-            element={
-              <ProtectedRoute>
-                <AccountCreationComponent />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="EmployeeProfileComponent"
-            element={
-              <ProtectedRoute>
-                <EmployeeProfileComponent />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/DJobSeeker/*"
-            element={
-              <ProtectedRoute>
-                <DJobSeeker />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/UpdateAccountForm"
-            element={
-              <ProtectedRoute>
-                <UpdateAccountForm />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/Payments"
-            element={
-              <ProtectedRoute>
-                <Payments />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/SkillRatingForm"
-            element={
-              <ProtectedRoute>
-                <SkillRatingForm />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/UpdateSkill"
-            element={
-              <ProtectedRoute>
-                <UpdateSkill />
-              </ProtectedRoute>
-            }
-          />
+        <Route path="/" element={<Home />} />
+        <Route path="/HowItWorks" element={<HowItWorks />}>
+          <Route path="employer" element={<Employer />} />
+          <Route path="jobseeker" element={<JobSeeker />} />
         </Route>
+        <Route path="/PostAJob" element={<PostAJob />} />
+        <Route path="/Jobseek" element={<Jobseek />} />
+        <Route path="/Pricing" element={<Pricing />} />
+        <Route path="/Resources" element={<Resources />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/Signup" element={<SignUp />} />
+        <Route path="/SearchJob" element={<SearchJob />} />
+        <Route
+          path="/AccountCreation"
+          element={
+            <ProtectedRoute role="employee">
+              <AccountCreationComponent />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/EmployeeProfileComponent"
+          element={
+            <ProtectedRoute role="employee">
+              <EmployeeProfileComponent />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/ViewProfile"
+          element={
+            <ProtectedRoute role="employee">
+              <ViewProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/ProfileVerification"
+          element={
+            <ProtectedRoute role="employee">
+              <ProfileVerification />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/VerificationComponent"
+          element={
+            <ProtectedRoute role="employee">
+              <VerificationComponent />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/PhoneVerification"
+          element={
+            <ProtectedRoute role="employee">
+              <PhoneVerification />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/VerifyAddressComponent"
+          element={
+            <ProtectedRoute role="employee">
+              <VerifyAddressComponent />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/DJobSeeker/*"
+          element={
+            <ProtectedRoute role="employee">
+              <DJobSeeker />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/UpdateAccountForm"
+          element={
+            <ProtectedRoute role="employee">
+              <UpdateAccountForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/Payments"
+          element={
+            <ProtectedRoute role="employee">
+              <Payments />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/SkillRatingForm"
+          element={
+            <ProtectedRoute role="employee">
+              <SkillRatingForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/UpdateSkill"
+          element={
+            <ProtectedRoute role="employee">
+              <UpdateSkill />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/DEmployer/*"
+          element={
+            <ProtectedRoute role="employer">
+              <DEmployer />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
+      {location.pathname.includes("updateskill") && <BookSection />}
       <Footer />
     </div>
   );

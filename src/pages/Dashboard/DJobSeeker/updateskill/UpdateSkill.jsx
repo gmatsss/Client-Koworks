@@ -1,3 +1,4 @@
+import BookSection from "../components/booksection";
 import SkillRatingFormUpdate from "./components/SkillRatingFormUpdate";
 const UpdateSkill = () => {
   return (

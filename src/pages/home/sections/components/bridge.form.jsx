@@ -23,7 +23,7 @@ const B_form = () => {
         </button>
       </form>
       <span>or</span>
-      <a href="/post-a-job" className="btn-default-red">
+      <a href="/PostAJob" className="btn-default-red">
         Post a Job - It's Free
       </a>
     </div>

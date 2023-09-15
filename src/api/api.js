@@ -8,29 +8,31 @@ export async function fetchData(
 ) {
   const url = `${API_ENDPOINT}${endpoint}`;
 
+  const headers = useFormData
+    ? { Accept: "application/json" }
+    : {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      };
+
   const options = {
     method: method,
-    headers: {
-      Accept: "application/json",
-      "Content-Type": useFormData ? undefined : "application/json",
-    },
+    headers: headers,
     credentials: "include",
   };
 
   if (data) {
-    if (useFormData) {
-      const formData = new FormData();
-      for (const key in data) {
-        formData.append(key, data[key]);
-      }
-      options.body = formData;
-    } else {
-      options.body = JSON.stringify(data);
-    }
+    options.body = useFormData ? data : JSON.stringify(data);
   }
 
   try {
     const response = await fetch(url, options);
+
+    // Check if the response is an image
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.startsWith("image/")) {
+      return { blob: await response.blob() };
+    }
 
     const responseData = await response.json();
 

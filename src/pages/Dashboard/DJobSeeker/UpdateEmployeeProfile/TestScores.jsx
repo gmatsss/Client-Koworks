@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { fetchData } from "../../../../api/api";
 import useOnce from "../../../../api/useOnce";
+import { UserContext } from "../../../../context/UserContext";
 
 function TestScores({ onTestScoresChange }) {
-  // State for test scores
+  const { currentUser } = useContext(UserContext);
+
   const [dominanceScore, setDominanceScore] = useState("");
   const [influenceScore, setInfluenceScore] = useState("");
   const [steadinessScore, setSteadinessScore] = useState("");
@@ -14,48 +16,6 @@ function TestScores({ onTestScoresChange }) {
   const [iqImg, setIqImg] = useState(null);
   const [englishScore, setEnglishScore] = useState("");
   const [englishImg, setEnglishImg] = useState(null);
-  // State variables for base64 representations
-  const [discImgBase64, setDiscImgBase64] = useState(null);
-  const [iqImgBase64, setIqImgBase64] = useState(null);
-  const [englishImgBase64, setEnglishImgBase64] = useState(null);
-
-  // Helper function to convert file to base64
-  const toBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-
-  useEffect(() => {
-    // Convert discImg to base64
-    if (discImg) {
-      toBase64(discImg)
-        .then((result) => setDiscImgBase64(result))
-        .catch((error) =>
-          console.error("Error converting discImg to base64:", error)
-        );
-    }
-
-    // Convert iqImg to base64
-    if (iqImg) {
-      toBase64(iqImg)
-        .then((result) => setIqImgBase64(result))
-        .catch((error) =>
-          console.error("Error converting iqImg to base64:", error)
-        );
-    }
-
-    // Convert englishImg to base64
-    if (englishImg) {
-      toBase64(englishImg)
-        .then((result) => setEnglishImgBase64(result))
-        .catch((error) =>
-          console.error("Error converting englishImg to base64:", error)
-        );
-    }
-  }, [discImg, iqImg, englishImg]);
 
   useEffect(() => {
     // Whenever test scores change, we'll notify the parent component
@@ -65,15 +25,15 @@ function TestScores({ onTestScoresChange }) {
         influence_score: influenceScore,
         steadiness_score: steadinessScore,
         compliance_score: complianceScore,
-        disc_img: discImgBase64,
+        disc_img: discImg,
       },
       iq: {
         iq_score: iqScore,
-        iq_img: iqImgBase64,
+        iq_img: iqImg,
       },
       english: {
         english_score: englishScore,
-        english_img: englishImgBase64,
+        english_img: englishImg,
       },
     });
   }, [
@@ -88,30 +48,23 @@ function TestScores({ onTestScoresChange }) {
     englishImg,
   ]);
 
-  const FetchtestScores = async () => {
-    const testScoresResponse = await fetchData(
-      "JobSeekerRoutes/getTestScoresByUserId"
-    );
-    if (testScoresResponse.data) {
-      const testData = testScoresResponse.data;
-      // Assuming you have similar useState hooks for TestData
-      setDominanceScore(testData.disc.dominance_score || null);
-      setInfluenceScore(testData.disc.influence_score || null);
-      setSteadinessScore(testData.disc.steadiness_score || null);
-      setComplianceScore(testData.disc.compliance_score || null);
-      setDiscImg(testData.disc.disc_img || null);
-      setIqScore(testData.iq.iq_score || null);
-      setIqImg(testData.iq.iq_img || null);
-      setEnglishScore(testData.english.english_score || null);
-      setEnglishImg(testData.english.english_img || null);
+  // Use the TestScores data from currentUser
+  const testScoresData = currentUser?.testScores;
+  useEffect(() => {
+    if (testScoresData) {
+      setDominanceScore(testScoresData.disc.dominance_score || "");
+      setInfluenceScore(testScoresData.disc.influence_score || "");
+      setSteadinessScore(testScoresData.disc.steadiness_score || "");
+      setComplianceScore(testScoresData.disc.compliance_score || "");
+      setDiscImg(testScoresData.disc.disc_img || "");
+      setIqScore(testScoresData.iq.iq_score || "");
+      setIqImg(testScoresData.iq.iq_img || "");
+      setEnglishScore(testScoresData.english.english_score || "");
+      setEnglishImg(testScoresData.english.english_img || "");
     }
-  };
+  }, [testScoresData]);
 
-  useOnce(FetchtestScores);
-
-  // Render the test scores form elements here...
   return (
-    // ... JSX code for the test scores form elements ...
     <div className="kform-group mtop-30">
       <h3 className="f-20 b blue">Test Scores</h3>
       <div className="row">

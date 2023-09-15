@@ -10,8 +10,12 @@ import SeekerLink from "./components/Seeker_link";
 import { UserContext } from "../../context/UserContext";
 import MobileNav from "./components/MobileNav";
 
-const NavigationLinks = ({ currentUser }) =>
-  currentUser ? <SeekerLink /> : <NavLink />;
+const NavigationLinks = ({ currentUser }) => {
+  if (currentUser && currentUser.role === "employee") {
+    return <SeekerLink />;
+  }
+  return <NavLink />;
+};
 
 const Header = () => {
   const { currentUser } = useContext(UserContext);

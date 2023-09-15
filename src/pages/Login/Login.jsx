@@ -20,7 +20,12 @@ const Login = () => {
 
     if (result.success) {
       toast.success(result.message);
-      navigate("/DJobSeeker");
+
+      if (result.user.role === "employee") {
+        navigate("/DJobSeeker");
+      } else if (result.user.role === "employer") {
+        navigate("/DEmployer");
+      }
     } else {
       toast.warning(result.message);
     }

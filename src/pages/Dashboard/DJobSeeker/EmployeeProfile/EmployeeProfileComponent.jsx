@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { fetchData } from "../../../../api/api";
 import { useNavigate } from "react-router-dom";
 import ProfileForm from "./ProfileForm";
+import { UserContext } from "../../../../context/UserContext";
 
 // Main Component
 function EmployeeProfileComponent() {
+  const { fetchUser } = useContext(UserContext);
   const navigate = useNavigate();
   // State variables for form fields
   const [jobTitle, setJobTitle] = useState("");
@@ -45,23 +47,26 @@ function EmployeeProfileComponent() {
       gender,
       bday,
     };
+
     for (let key in formData) {
       if (!formData[key]) {
         toast.warning(`Please fill in the ${key.replace(/_/g, " ")} field.`);
         return; // Exit the function early if a field is missing
       }
     }
+
+    // Request geolocation
     try {
       const response = await fetchData(
         "JobSeekerRoutes/Createprofile",
         "POST",
         formData
       );
-
       if (response.message) {
-        toast.success(response.message);
         if (response.data) {
-          console.log("Created Profile:", response.data);
+          toast.success(response.message);
+          fetchUser();
+          navigate("/SkillRatingForm");
         }
       } else {
         toast.error(response.error || "Unknown error");
