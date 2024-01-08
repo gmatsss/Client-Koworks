@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import { fetchData } from "../api/api";
 import useOnce from "../api/useOnce";
+import { toast } from "react-toastify"; // Ensure you've imported toast
 
 const UserContext = createContext();
 
@@ -14,37 +15,26 @@ const UserProvider = ({ children }) => {
 
   const [profileImage, setProfileImage] = useState(DEFAULT_IMAGE_URL);
 
-  const fetchProfileImage = async () => {
-    try {
-      const response = await fetchData(
-        `EmployerRoutes/getUserProfileImage`,
-        "GET"
-      );
-      if (response.blob) {
-        const imageUrl = URL.createObjectURL(response.blob);
-        setProfileImage(imageUrl);
-      } else if (response.message === "No image file uploaded yet") {
-        setProfileImage(DEFAULT_IMAGE_URL);
-      }
-    } catch (error) {
-      console.error("Error fetching profile image:", error);
-      setProfileImage(DEFAULT_IMAGE_URL);
-    }
-  };
+  const fetchUser = () => {
+    setLoading(true);
+    fetchData("user/getjobseek")
+      .then((data) => {
+        console.log(data);
+        setCurrentUser(data.user);
 
-  const fetchUser = async () => {
-    try {
-      setLoading(true);
-      const data = await fetchData("user/getjobseek");
-      setCurrentUser(data.user);
-      if (data.user) {
-        await fetchProfileImage();
-      }
-      setLoading(false);
-    } catch (err) {
-      setError(err);
-      setLoading(false);
-    }
+        if (data.profileImageData) {
+          setProfileImage(`data:image/png;base64,${data.profileImageData}`);
+        } else {
+          setProfileImage(profileImage);
+        }
+
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err);
+        setLoading(false);
+        toast.error("Error fetching user.", { autoClose: 3000 }); // Error toast
+      });
   };
 
   const login = async (email, password) => {

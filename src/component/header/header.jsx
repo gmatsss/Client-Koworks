@@ -10,7 +10,9 @@ import SeekerLink from "./components/Seeker_link";
 import { UserContext } from "../../context/UserContext";
 import MobileNav from "./components/MobileNav";
 
-const NavigationLinks = ({ currentUser }) => {
+const NavigationLinks = ({ currentUser, loading }) => {
+  if (loading) return <NavLink />; // Return nothing if still loading
+
   if (currentUser && currentUser.role === "employee") {
     return <SeekerLink />;
   }
@@ -18,7 +20,7 @@ const NavigationLinks = ({ currentUser }) => {
 };
 
 const Header = () => {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, loading } = useContext(UserContext);
   const [mobileview, setMobileView] = useState(false);
   const callback = (data) => setMobileView(data);
 
@@ -45,9 +47,9 @@ const Header = () => {
               <Logo />
             </div>
             <div className="col col-md-6 px-0 h-menu ">
-              <NavigationLinks currentUser={currentUser} />
+              <NavigationLinks currentUser={currentUser} loading={loading} />
             </div>
-            <UserButton onClick={callback} />
+            <UserButton onClick={callback} loading={loading} />
           </div>
         </div>
       </header>

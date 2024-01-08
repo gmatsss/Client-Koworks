@@ -75,7 +75,11 @@ const Sidebar = () => {
         if (modalInstance) {
           modalInstance.hide(); // Close the modal upon successful upload
         }
-        fetchUser();
+
+        // Add a delay before re-fetching the user data
+        setTimeout(() => {
+          fetchUser();
+        }, 2000); // 2 seconds delay
       } else {
         toast.error("Error uploading image:", response.message);
       }
@@ -121,7 +125,7 @@ const Sidebar = () => {
             <span>
               <img src={postJob} alt="Post New Job" />
             </span>
-            <Link to="/post-a-job-form" className="u-case f-20 fn blue">
+            <Link to="/DEmployer/postnewjob" className="u-case f-20 fn blue">
               Post New Job
             </Link>
           </li>

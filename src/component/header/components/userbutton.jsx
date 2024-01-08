@@ -128,7 +128,7 @@ const MyAccountMenu = ({ currentUser, handleLogout }) => (
 );
 
 const UserButton = React.memo((props) => {
-  const { currentUser, logout } = useContext(UserContext);
+  const { currentUser, logout, loading } = useContext(UserContext); // Destructure `loading` from context
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -152,14 +152,14 @@ const UserButton = React.memo((props) => {
     <div className="col col-md-3 px-0 text-right h-smenu ">
       <ul className="nav-login">
         <li>
-          {currentUser ? (
-            <LogoutButton handleLogout={handleLogout} />
-          ) : (
+          {loading || !currentUser ? (
             <LoginButton />
+          ) : (
+            <LogoutButton handleLogout={handleLogout} />
           )}
         </li>
         <li>
-          {currentUser && (
+          {!loading && currentUser && (
             <MyAccountMenu
               currentUser={currentUser}
               handleLogout={handleLogout}

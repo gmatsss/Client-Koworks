@@ -1,6 +1,7 @@
 import React from "react";
 import logo from "../../imgs/linkage-logo.png";
 import FooterColumn from "./components/FooterColumn";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const columns = [
@@ -68,9 +69,11 @@ const Footer = () => {
         <div className="container k-container">
           <div className="row align-items-center">
             <div className="col col-md-6">
-              <a href="/">
+              <Link to="/">
+                {" "}
+                {/* Using Link here instead of a */}
                 <img src={logo} alt="Linkage Logo" />
-              </a>
+              </Link>
             </div>
             <div className="col col-md-6 text-center">
               <p className="copy">

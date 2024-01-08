@@ -8,6 +8,7 @@ import RecentJobPosts from "./IconMenu/RecentJobPosts";
 import HiredWorkers from "./IconMenu/HiredWorkers";
 import BookmarkedWorkers from "./IconMenu/BookmarkedWorkers";
 import EditAccount from "./editAccount/editAccount";
+import Postnewjob from "./postnewjob/PostNewJob";
 
 const DEmployer = () => (
   <div>
@@ -46,6 +47,14 @@ const DEmployer = () => (
                 element={
                   <>
                     <EditAccount />
+                  </>
+                }
+              />
+              <Route
+                path="postnewjob"
+                element={
+                  <>
+                    <Postnewjob />
                   </>
                 }
               />
