@@ -4,7 +4,7 @@ const B_categories = ({ categories }) => {
   const navigate = useNavigate();
 
   const handleCategory = (title) => {
-    navigate(`/SearchJob?s=${title}`);
+    navigate(`/SearchEmployee?s=${title}`);
   };
 
   return (

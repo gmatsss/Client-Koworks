@@ -19,7 +19,6 @@ const UserProvider = ({ children }) => {
     setLoading(true);
     fetchData("user/getjobseek")
       .then((data) => {
-        console.log(data);
         setCurrentUser(data.user);
 
         if (data.profileImageData) {
@@ -73,6 +72,8 @@ const UserProvider = ({ children }) => {
   };
 
   useOnce(fetchUser);
+
+  console.log(currentUser);
 
   return (
     <UserContext.Provider

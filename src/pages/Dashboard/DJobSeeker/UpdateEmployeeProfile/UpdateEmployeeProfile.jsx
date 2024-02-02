@@ -4,8 +4,6 @@ import { fetchData } from "../../../../api/api";
 import { useLocation } from "react-router-dom";
 import TestScores from "./TestScores";
 import EmployeeProfileForm from "./EmployeeProfileForm";
-import useOnce from "../../../../api/useOnce";
-import { DotPulse } from "@uiball/loaders";
 import { UserContext } from "../../../../context/UserContext";
 
 // Main Component
@@ -42,7 +40,6 @@ function UpdateEmployeeProfile() {
 
     // Extract the image parameter from the query string
     const searchParams = new URLSearchParams(location.search);
-    const imageParam = searchParams.get("image");
 
     const ProfileData = {
       job_title: jobTitle,
@@ -97,56 +94,32 @@ function UpdateEmployeeProfile() {
             testScoresData.disc.compliance_score
           );
         }
-        if (
-          testScoresData.disc.disc_img &&
-          typeof testScoresData.disc.disc_img === "object" &&
-          testScoresData.disc.disc_img.name
-        ) {
-          formData.append(
-            "disc.disc_img",
-            testScoresData.disc.disc_img,
-            testScoresData.disc.disc_img.name
-          );
-        }
+
         if (testScoresData.iq.iq_score) {
           formData.append("iq.iq_score", testScoresData.iq.iq_score);
         }
-        if (
-          testScoresData.iq.iq_img &&
-          typeof testScoresData.iq.iq_img === "object" &&
-          testScoresData.iq.iq_img.name
-        ) {
-          formData.append(
-            "iq.iq_img",
-            testScoresData.iq.iq_img,
-            testScoresData.iq.iq_img.name
-          );
-        }
+
         if (testScoresData.english.english_score) {
           formData.append(
             "english.english_score",
             testScoresData.english.english_score
           );
         }
-        if (
-          testScoresData.english.english_img &&
-          typeof testScoresData.english.english_img === "object" &&
-          testScoresData.english.english_img.name
-        ) {
-          formData.append(
-            "english.english_img",
-            testScoresData.english.english_img,
-            testScoresData.english.english_img.name
-          );
-        }
 
-        for (let pair of formData.entries()) {
-          console.log(pair[0] + ", " + pair[1]);
-        }
+        const appendFileIfValid = (key, fileData) => {
+          if (fileData && fileData instanceof Blob) {
+            formData.append(key, fileData, fileData.name);
+          }
+        };
 
-        console.log(formData.get("english.english_img").name);
-        console.log(formData.get("english.english_img").size);
-        console.log(formData.get("english.english_img").type);
+        appendFileIfValid("disc_img", testScoresData.disc?.disc_img);
+        appendFileIfValid("iq_img", testScoresData.iq?.iq_img);
+        appendFileIfValid("english_img", testScoresData.english?.english_img);
+
+        // Log the entire FormData
+        for (let [key, value] of formData.entries()) {
+          console.log(key, value);
+        }
 
         if (formData) {
           // Make the request for TestData

@@ -1,6 +1,18 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "../../../context/UserContext";
 
 const NavLink = () => {
+  const { currentUser } = useContext(UserContext);
+
+  const postJobLink =
+    currentUser && currentUser.role === "employer"
+      ? "/DEmployer/postnewjob"
+      : "/PostAJob";
+
+  const serachJobLink =
+    currentUser && currentUser.role === "employer" ? "/SearchJob" : "/Jobseek";
+
   return (
     <nav className="knav">
       <ul>
@@ -28,12 +40,12 @@ const NavLink = () => {
         </li>
 
         <li>
-          <Link className="" to="/PostAJob">
+          <Link to={postJobLink}>
             <span>Post A Job</span>
           </Link>
         </li>
         <li>
-          <Link className=" " to="/Jobseek">
+          <Link to={serachJobLink}>
             <span>Job Seeker</span>
           </Link>
         </li>

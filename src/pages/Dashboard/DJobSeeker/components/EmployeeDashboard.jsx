@@ -4,11 +4,12 @@ import EmployeeIconMenu from "./EmployeeIconMenu";
 import VerificationSection from "./VerificationSection ";
 import StrengthenProfileSection from "./StrengthenProfileSection ";
 
-const EmployeeDashboard = () => {
+const EmployeeDashboard = ({ currentUser }) => {
   return (
     <>
       <EmployeeIconMenu />
-      <VerificationSection />
+      <VerificationSection currentUser={currentUser} />
+
       <StrengthenProfileSection />
     </>
   );

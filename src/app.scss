@@ -998,6 +998,7 @@ tr.unread {
     font-weight: normal;
 }
 .banner-job-meta span {
+    position: relative;
     color: #ffffff;
     font-size: 20px;
 }
@@ -2482,6 +2483,40 @@ ul.pagination {
     color: #393934;
     font-weight: 500;
 }
+
+.red-box-content {
+    background: #fee7e7; /* Light red background */
+    margin-top: 30px;
+    padding: 40px;
+    border-radius: 5px;
+    border: 1px solid #d6d6d6;
+}
+
+.red-box-content p:not(.red) {
+    color: #393934; /* Keeping the text color same as before */
+    font-weight: 500;
+}
+
+.red-box-content ol,
+.number-list {
+    padding: 0 0 0 15px;
+    margin: 0;
+}
+
+.red-box-content ol > li,
+.number-list > li {
+    color: #b80a0a; /* Darker red for list item numbers */
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.red-box-content ol > li > span,
+.number-list > li > span {
+    color: #393934; /* Keeping the text color same as before */
+    font-weight: 500;
+}
+
+
 .edit-photo {
     position: relative;
     display: block;
@@ -3352,6 +3387,40 @@ ul.pagination {
   text-decoration: none;
 }
 
+
+.modal-fade-enter {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 300ms, transform 300ms;
+  }
+  
+  .modal-fade-enter-active {
+    opacity: 1;
+    transform: scale(1);
+  }
+  
+  .modal-fade-exit {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 300ms, transform 300ms;
+  }
+  
+  .modal-fade-exit-active {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+  }
+  
+
 @media (min-width: 1200px) {
     .k-container {
         max-width: 1247px;
@@ -3636,7 +3705,17 @@ ul.pagination {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 600px; // Set this to whatever you consider "medium"
-    width: 100%;
+    height: 100vh; /* Full viewport height */
+    width: 100vw; /* Full viewport width */
   }
+  
+  /* styles.css */
+.result-img img {
+    width: 150px; /* Adjust the size as needed */
+    height: 150px; /* Ensure this is the same as the width for a perfect circle */
+    border-radius: 50%; /* This makes the image round */
+    object-fit: cover; /* This ensures the image covers the area without stretching */
+  }
+  
+
   

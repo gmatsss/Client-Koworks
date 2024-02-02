@@ -58,6 +58,11 @@ const EditAccount = () => {
   const [address, setAddress] = useState(
     businessProfile ? businessProfile.address : ""
   );
+
+  const [city, setCity] = useState(
+    currentUser && currentUser.city ? currentUser.city : ""
+  );
+
   const [zipCode, setZipCode] = useState(
     businessProfile ? businessProfile.zipCode : ""
   );
@@ -97,6 +102,7 @@ const EditAccount = () => {
         setSelectedCountry(bp.selectedCountry);
         setSelectedTimezone(bp.selectedTimezone);
         setSelectedCurrency(bp.selectedCurrency);
+        setCity(bp.city);
       }
     }
   }, [currentUser]);
@@ -111,6 +117,7 @@ const EditAccount = () => {
       contactName,
       address,
       selectedCountry,
+      city,
       zipCode,
       phone,
       selectedTimezone,
@@ -225,6 +232,8 @@ const EditAccount = () => {
             onCountryChange={handleCountryChange}
             selectedCountry={selectedCountry}
             allCountries={allCountries}
+            city={city} // Pass city as a prop
+            setCity={setCity} // Pass setCity as a prop
           />
 
           <div className="kform-group colstwo mtop-20 relative">

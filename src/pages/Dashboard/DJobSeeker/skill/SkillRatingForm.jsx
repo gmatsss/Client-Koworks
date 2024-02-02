@@ -1,12 +1,14 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import SkillRating from "./components/SkillRating";
 import { Link, useNavigate } from "react-router-dom";
 import Banner from "./components/banner";
 import { Modal } from "bootstrap";
 import { toast } from "react-toastify";
 import { fetchData } from "../../../../api/api";
+import { UserContext } from "../../../../context/UserContext";
 
 const SkillRatingForm = () => {
+  const { fetchUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [skills, setSkills] = useState({
     adminandoffice: {
@@ -96,6 +98,7 @@ const SkillRatingForm = () => {
   const backtodashboard2 = async () => {
     const bootstrapModal = Modal.getInstance(modalRef.current);
     await bootstrapModal.hide();
+    await fetchUser(); // Fetch the updated user data
     navigate("/DJobSeeker");
   };
 

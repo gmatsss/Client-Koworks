@@ -6,7 +6,7 @@ const B_form = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     const searchQuery = e.target.elements.s.value;
-    navigate(`/searchjob?s=${searchQuery}`);
+    navigate(`/searchEmployee?s=${searchQuery}`);
   };
 
   return (

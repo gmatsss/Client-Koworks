@@ -1,6 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const AccountCreationComponent = () => {
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    navigate("/EmployeeProfileComponent"); // Navigate to the provided endpoint
+  };
   return (
     <div>
       <section className="steps-section red-bg-before">
@@ -38,14 +44,17 @@ const AccountCreationComponent = () => {
               <p className="f-16 fn mbot-40">
                 Please check your email for the verification link.
               </p>
-              <a href="create-profile" className="btn-default-red fn mbot-40">
+              <button
+                onClick={handleButtonClick}
+                className="btn-default-red fn mbot-40"
+              >
                 Ok, got it!
-              </a>
+              </button>
               <p className="text-center f-16 fn">
                 Already have a Linkage.ph Account?
                 <span className="d-block">
                   <a
-                    href="https://linkagekoworks.viewourdesign.info/login"
+                    href="/" // Updated to navigate to the home endpoint
                     className="u-case red b"
                   >
                     Sign In

@@ -29,7 +29,10 @@ const DJobSeeker = () => {
               </div>
               <div className="div col px-0">
                 <Routes>
-                  <Route path="/" element={<EmployeeDashboard />} />
+                  <Route
+                    path="/"
+                    element={<EmployeeDashboard currentUser={currentUser} />}
+                  />
                   <Route
                     path="UpdateAccountForm"
                     element={<UpdateAccountForm />}

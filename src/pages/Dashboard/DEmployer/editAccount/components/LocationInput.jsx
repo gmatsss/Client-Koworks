@@ -1,6 +1,11 @@
 import React, { useState } from "react";
-function LocationInput({ onCountryChange, selectedCountry, allCountries }) {
-  const [city, setCity] = useState("");
+function LocationInput({
+  onCountryChange,
+  selectedCountry,
+  allCountries,
+  city,
+  setCity,
+}) {
   const [selectedCountryLocal, setSelectedCountryLocal] = useState(
     selectedCountry || "Select Country"
   );

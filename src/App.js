@@ -16,7 +16,7 @@ import Pricing from "./pages/Pricing/Pricing";
 import Resources from "./pages/Resources/Resources";
 import Login from "./pages/Login/Login";
 import SignUp from "./pages/Signup/signup";
-import SearchJob from "./pages/SearchJob/SearchJob";
+import SearchEmployee from "./pages/SearchEmployee/SearchEmployee";
 import AccountCreationComponent from "./pages/Dashboard/DJobSeeker/AccountCreation/AccountCreation";
 import EmployeeProfileComponent from "./pages/Dashboard/DJobSeeker/EmployeeProfile/EmployeeProfileComponent";
 
@@ -40,29 +40,30 @@ import ProfileVerification from "./pages/Dashboard/DJobSeeker/VerifyProfile/Prof
 import VerifyAddressComponent from "./pages/Dashboard/DJobSeeker/VerifyProfile/VerifyAddress/VerifyAddressComponent";
 import PhoneVerification from "./pages/Dashboard/DJobSeeker/VerifyProfile/PhoneVerification/PhoneVerification";
 import DEmployer from "./pages/Dashboard/DEmployer/DEmployer";
+import Employerjob from "./pages/JobEmployerlist/Employerjob";
+import ViewJobEmployer from "./pages/ViewJobEmployer/ViewJobEmployer";
 
 function App() {
-  const location = useLocation(); // Use the hook
+  const location = useLocation();
   const { currentUser, loading, fetchUser } = useContext(UserContext);
 
   useOnce(() => {
     fetchUser();
   });
 
-  function ProtectedRoute({ children, role }) {
-    if (loading) {
-      return (
-        <div className="spinner-container">
-          <DotSpinner size={40} speed={0.9} color="black" />
-        </div>
-      );
-    }
+  if (loading) {
+    return (
+      <div className="spinner-container">
+        <DotSpinner size={80} speed={0.9} color="black" />
+      </div>
+    );
+  }
 
+  function ProtectedRoute({ children, role }) {
     if (!currentUser) {
       return <Navigate to="/Login" />;
     }
 
-    // Check if the current user has the required role
     if (role && currentUser.role !== role) {
       return <Navigate to="/" />;
     }
@@ -85,7 +86,7 @@ function App() {
         <Route path="/Resources" element={<Resources />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Signup" element={<SignUp />} />
-        <Route path="/SearchJob" element={<SearchJob />} />
+        <Route path="/SearchEmployee" element={<SearchEmployee />} />
         <Route
           path="/AccountCreation"
           element={
@@ -187,6 +188,23 @@ function App() {
           element={
             <ProtectedRoute role="employer">
               <DEmployer />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/Employerjob"
+          element={
+            <ProtectedRoute role="employer">
+              <Employerjob />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/ViewJobEmployer/:id"
+          element={
+            <ProtectedRoute role="employer">
+              <ViewJobEmployer />
             </ProtectedRoute>
           }
         />

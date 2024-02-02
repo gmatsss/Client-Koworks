@@ -126,6 +126,7 @@ function TestScores({ onTestScoresChange }) {
               <input
                 type="file"
                 name="disc_img"
+                accept="image/jpeg, image/png, image/gif"
                 placeholder={discImg ? discImg.name : ""}
                 onChange={(e) => setDiscImg(e.target.files[0])}
               />
@@ -154,6 +155,7 @@ function TestScores({ onTestScoresChange }) {
               <input
                 type="file"
                 name="iq_img"
+                accept="image/jpeg, image/png, image/gif"
                 placeholder={iqImg ? iqImg.name : ""}
                 onChange={(e) => setIqImg(e.target.files[0])}
               />
@@ -192,6 +194,7 @@ function TestScores({ onTestScoresChange }) {
               <input
                 type="file"
                 name="english_img"
+                accept="image/jpeg, image/png, image/gif"
                 placeholder={englishImg ? englishImg.name : ""}
                 onChange={(e) => setEnglishImg(e.target.files[0])}
               />
