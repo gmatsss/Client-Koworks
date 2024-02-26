@@ -4,12 +4,14 @@ import employment from "../../../../../imgs/icons/employment-type-icon-red.png";
 import fb from "../../../../../imgs/icons/fb-veri-icon-red.png";
 import id from "../../../../../imgs/icons/id-veri-icon-red.png";
 
-const ProfileSidebar = ({ currentUser }) => {
+const ProfileSidebar = ({ currentUser, profileImage }) => {
   const { employeeProfile } = currentUser;
+
+  console.log(currentUser);
 
   return (
     <div className="col-3">
-      <img src={employeeProfile.img} alt="Profile Photo" className="pr-img" />
+      <img src={profileImage} alt="Profile Photo" className="pr-img" />
       <div className="pr-sidebar">
         <div className="pr-salary">
           <h4>

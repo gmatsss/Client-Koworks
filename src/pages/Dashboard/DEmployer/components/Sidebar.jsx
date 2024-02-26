@@ -133,12 +133,9 @@ const Sidebar = () => {
             <span>
               <img src={searchWork} alt="Search Workers" />
             </span>
-            <a
-              href="https://linkagekoworks.viewourdesign.info/search"
-              className="u-case f-20 fn blue"
-            >
+            <Link to="/SearchEmployee" className="u-case f-20 fn blue">
               Search Workers
-            </a>
+            </Link>
           </li>
           <li>
             <span>

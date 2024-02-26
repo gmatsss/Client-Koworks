@@ -55,15 +55,15 @@ const SearchEmployee = () => {
 
       // Assuming the response contains an array of jobs
       const allJobs = response.data || [];
-      // console.log("All Jobs:", JSON.stringify(allJobs, null, 2));
 
       // Filter the jobs based on the filter criteria
       const filteredJobs = allJobs.filter((job) => {
         if (
           filterCriteria.searchText &&
-          !job.employeeProfile.job_title
-            .toLowerCase()
-            .includes(filterCriteria.searchText.toLowerCase())
+          (!job.employeeProfile ||
+            !job.employeeProfile.job_title
+              .toLowerCase()
+              .includes(filterCriteria.searchText.toLowerCase()))
         ) {
           return false;
         }
@@ -79,21 +79,22 @@ const SearchEmployee = () => {
         }
 
         // Salary range filter
-        const salary = job.employeeProfile.salary;
+        const salary = job.employeeProfile && job.employeeProfile.salary;
         if (
           filterCriteria.salaryRangeLow &&
-          salary < filterCriteria.salaryRangeLow
+          (salary === null || salary < filterCriteria.salaryRangeLow)
         ) {
           return false;
         }
 
         if (
           filterCriteria.salaryRangeHigh &&
-          salary > filterCriteria.salaryRangeHigh
+          (salary === null || salary > filterCriteria.salaryRangeHigh)
         ) {
           return false;
         }
 
+        // last login
         if (filterCriteria.lastActive && job.lastLogin) {
           // Check if the 'Any' option is selected
           if (filterCriteria.lastActive === "any") {

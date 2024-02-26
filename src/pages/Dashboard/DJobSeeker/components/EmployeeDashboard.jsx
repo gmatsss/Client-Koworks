@@ -1,16 +1,13 @@
 // EmployeeDashboard.js
 import React from "react";
 import EmployeeIconMenu from "./EmployeeIconMenu";
-import VerificationSection from "./VerificationSection ";
-import StrengthenProfileSection from "./StrengthenProfileSection ";
+import { Outlet } from "react-router-dom"; // Import Outlet
 
 const EmployeeDashboard = ({ currentUser }) => {
   return (
     <>
       <EmployeeIconMenu />
-      <VerificationSection currentUser={currentUser} />
-
-      <StrengthenProfileSection />
+      <Outlet />
     </>
   );
 };

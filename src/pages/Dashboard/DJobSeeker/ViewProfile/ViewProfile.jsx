@@ -7,7 +7,7 @@ import WorkerSkills from "./components/WorkerSkills";
 import { UserContext } from "../../../../context/UserContext";
 
 const ViewProfile = () => {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, profileImage } = useContext(UserContext);
 
   const topRatedSkills = currentUser.skill
     ? Object.values(currentUser.skill)
@@ -18,6 +18,11 @@ const ViewProfile = () => {
     : [];
 
   console.log(currentUser);
+
+  const idScore = currentUser.verificationStatus
+    ? currentUser.verificationStatus.idScore
+    : 0;
+
   return (
     <div>
       <section className="banner-section-sa banner-profile">
@@ -32,7 +37,7 @@ const ViewProfile = () => {
               <ul className="profile-meta">
                 <li className="pm-id">
                   {/* Assuming you'll implement ID PROOF later */}
-                  <span>20</span>
+                  <span>{idScore}</span>
                   <span>ID PROOF</span>
                 </li>
               </ul>
@@ -43,7 +48,10 @@ const ViewProfile = () => {
       <section className="profile-content-section">
         <div className="container k-container">
           <div className="row">
-            <ProfileSidebar currentUser={currentUser} />
+            <ProfileSidebar
+              currentUser={currentUser}
+              profileImage={profileImage}
+            />
             <div className="col mtop-90">
               <div className="row">
                 <BasicInformation currentUser={currentUser} />

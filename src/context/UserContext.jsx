@@ -10,6 +10,8 @@ const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  console.log(currentUser);
+
   const DEFAULT_IMAGE_URL =
     "https://linkagekoworks.viewourdesign.info/storage/images/placeholder-user.png";
 
@@ -72,8 +74,6 @@ const UserProvider = ({ children }) => {
   };
 
   useOnce(fetchUser);
-
-  console.log(currentUser);
 
   return (
     <UserContext.Provider

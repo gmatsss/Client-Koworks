@@ -1,6 +1,7 @@
 import MessageIcon from "../../../../imgs/icon-messages.png";
 import BookmarkIcon from "../../../../imgs/icon-bookmark-employers.png";
 import JobpostIcon from "../../../../imgs/icon-bookmark-jobposts.png";
+import { Link } from "react-router-dom";
 
 const EmployeeIconMenu = () => (
   <div className="employee-icon-menu">
@@ -13,20 +14,20 @@ const EmployeeIconMenu = () => (
         </a>
       </li>
       <li>
-        <a href="/">
+        <Link to="/DJobSeeker/Lisofjobapplied">
           <img src={BookmarkIcon} alt="Bookmarked Employers" />
-          <span className="blue fn">Job Board</span>
-        </a>
+          <span className="blue fn">Job Applied</span>
+        </Link>
       </li>
       <li>
-        <a href="https://linkagekoworks.viewourdesign.info/bookmark-jobs">
+        <Link to="/DJobSeeker/listofpinjobs">
           <img src={JobpostIcon} alt="Bookmarked Job Posts" />
           <span className="blue fn">
             Bookmarked
             <br />
             Job Posts
           </span>
-        </a>
+        </Link>
       </li>
     </ul>
   </div>

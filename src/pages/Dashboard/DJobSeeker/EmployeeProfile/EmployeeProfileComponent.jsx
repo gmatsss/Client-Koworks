@@ -105,8 +105,10 @@ function EmployeeProfileComponent() {
         <div class="container k-container">
           <div class="row">
             <div class="col px-0 text-left">
-              <h1 class="blue f-55">Tell us your skills</h1>
-              <h2 class="red f-30 fn">More about You</h2>
+              <h1 class="blue f-55" style={{ width: "110%" }}>
+                Complete Your Profile
+              </h1>
+              <h2 class="red f-30 fn">Tell Us More About Yourself</h2>
             </div>
             <div class="col px-0 d-flex justify-content-end">
               <div>

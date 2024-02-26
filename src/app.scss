@@ -301,15 +301,30 @@
     background-color: #ffffff;
     color: #a6a6a6;
 }
+
+/* Add this to your component's CSS or a global stylesheet */
 .blurry-text {
-    color: transparent;
-    text-shadow: 0 0 25px rgb(255 255 255);
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
+    opacity: 0.6;
+    color: transparent !important;
+    text-shadow:
+      0 0 8px rgba(255, 255, 255, 0.9),
+      0 0 12px rgba(255, 255, 255, 0.9),
+      0 0 16px rgba(255, 255, 255, 0.9),
+      0 0 20px rgba(255, 255, 255, 0.9),
+      0 0 24px rgba(255, 255, 255, 0.9),
+      0 0 28px rgba(255, 255, 255, 0.9),
+      0 0 32px rgba(255, 255, 255, 0.9),
+      0 0 36px rgba(255, 255, 255, 0.9),
+      0 0 40px rgba(255, 255, 255, 0.9),
+      0 0 44px rgba(255, 255, 255, 0.9),
+      0 0 48px rgba(255, 255, 255, 0.9);
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
+  }
+  
+  
 
 /** GLOBAL CSS **/
 body {
@@ -960,12 +975,24 @@ tr.unread {
 }
 .job-type {
     font-size: 14px;
-    background-color: #0a73b8;
     display: inline-block;
     padding: 5px 10px;
     color: #ffffff;
     margin-left: 15px;
 }
+
+.job-type.full-time {
+    background-color: #0a73b8; /* Blue for full-time */
+}
+
+.job-type.part-time {
+    background-color: #f0ad4e; /* Orange for part-time */
+}
+
+.job-type.any {
+    background-color: #5cb85c; /* Green for freelance */
+}
+
 /* .job-type:hover {
     text-decoration: none;
     color: #FFFFFF;
@@ -3718,4 +3745,84 @@ ul.pagination {
   }
   
 
+  
+  .getjob-container {
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 15px;
+  }
+  
+  .getjob-image {
+    width: 120px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px; /* Adjust spacing between image and description */
+  }
+  
+  .getjob-description {
+    flex: 1; /* Allows the description to take up the remaining space */
+  }
+  
+
+  .complete-profile-prompt h2 {
+    color: #007bff; /* Adjust the color as needed */
+    margin-bottom: 20px;
+  }
+  
+  .complete-profile-prompt p {
+    font-size: 18px;
+    margin-bottom: 30px;
+  }
+  
+  .complete-profile-prompt .btn {
+    font-weight: bold;
+    margin: 15px;
+  }
+  
+
+  .talented_f_span{
+    color: #007bff;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+
+ .search-input-container {
+  position: relative;
+  font-size: 0; /* Removes space between inline-block elements */
+  width: 100%;
+  max-width: 420px; /* Adjust based on your preference */
+}
+
+.search-input-container .inside-search-icon {
+  position: absolute;
+  font-size: 30px; /* Size of the icon */
+  top: 50%;
+  right: 10px; /* Adjust based on padding inside the input */
+  transform: translateY(-50%);
+  color: #707070; /* Icon color */
+}
+
+.search-input-container .search-field {
+  width: 100%;
+  padding: 15px 50px 15px 15px; /* Increased padding to make the input larger */
+  font-size: 18px; /* Increased font size */
+  border: none; /* Removed border */
+  border-radius: 5px; /* Border radius */
+  -webkit-appearance: none; /* Removes default styles for iOS */
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); /* Optional: added a subtle shadow for depth */
+}
+
+.search-field::placeholder {
+  color: #a9a9a9; /* Placeholder text color */
+}
+
+.search-field:focus {
+  outline: none;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); /* Optional: more pronounced shadow on focus for depth */
+}
+
+  
   

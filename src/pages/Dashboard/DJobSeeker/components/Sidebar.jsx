@@ -206,14 +206,14 @@ const Sidebar = () => {
               icon={SkillIcon}
               altText="Skills"
               link="/SkillRatingForm"
-              text="Skills"
+              text="Create Skills"
             />
           ) : (
             <MenuItem
               icon={SkillIcon}
               altText="Skills"
               link="/updateskill"
-              text="Skills"
+              text="Edit Skills"
             />
           )}
 
@@ -226,8 +226,8 @@ const Sidebar = () => {
           <MenuItem
             icon={SearchIcon}
             altText="Search Jobs"
-            link="/"
-            text="Search Jobs(not yet)"
+            link="/SearchJob"
+            text="Search Jobs"
           />
           <MenuItem
             icon={LogoutIcon}

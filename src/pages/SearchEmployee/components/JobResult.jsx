@@ -5,33 +5,44 @@ import {
   faBook,
   faBriefcase,
 } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const JobResult = ({ job }) => {
+  const navigate = useNavigate();
   const { employeeProfile, skill } = job;
-  const ratedSkills = Object.values(skill)
+  const ratedSkills = Object.values(skill ?? {})
     .flat()
     .filter((s) => s.rating > 0);
+
   const displayedSkills = ratedSkills
     .sort(() => 0.5 - Math.random())
     .slice(0, 3);
 
   // Adjust the image source to use the base64 imageData if available
-  const imageSrc = employeeProfile.imageData
+  const imageSrc = employeeProfile?.imageData
     ? `data:image/jpeg;base64,${employeeProfile.imageData}`
     : "../../imgs/placeholder-user.png";
+
+  const navigateWithState = () => {
+    navigate("/ViewOneEmployee", { state: { user: job } });
+  };
 
   return (
     <div className="result-container">
       <div className="result-header">
-        <h2 className="job-title">{employeeProfile.job_title}</h2>
-        <a href={employeeProfile.website}>View Profile</a>
-        {/* ... other elements ... */}
+        <h2 className="job-title">{employeeProfile?.job_title}</h2>
+        <div
+          className="d-flex justify-content-end h6"
+          style={{ cursor: "pointer" }}
+        >
+          <span onClick={navigateWithState}>View Profile</span>
+        </div>
       </div>
       <div className="result-content">
         <div className="row">
           <div className="col-3">
             <div className="result-img">
-              <img src={imageSrc} alt={employeeProfile.job_title} />
+              <img src={imageSrc} alt={employeeProfile?.job_title} />
             </div>
           </div>
           <div className="col-3">
@@ -39,14 +50,14 @@ const JobResult = ({ job }) => {
               <h3>
                 <FontAwesomeIcon icon={faMoneyBill} /> Expected Salary
               </h3>
-              <span className="up-val">${employeeProfile.salary}</span>
+              <span className="up-val">${employeeProfile?.salary}</span>
             </div>
             <div className="result-meta">
               <h3>
                 <FontAwesomeIcon icon={faClock} /> Employment Type
               </h3>
               <span className="up-val">
-                {employeeProfile.employment_status}
+                {employeeProfile?.employment_status}
               </span>
             </div>
           </div>
@@ -55,13 +66,15 @@ const JobResult = ({ job }) => {
               <h3>
                 <FontAwesomeIcon icon={faBook} /> Education
               </h3>
-              <span className="up-val">{employeeProfile.education}</span>
+              <span className="up-val">{employeeProfile?.education}</span>
             </div>
             <div className="result-meta">
               <h3>
                 <FontAwesomeIcon icon={faBriefcase} /> Experience
               </h3>
-              <span className="up-val">{employeeProfile.experience} years</span>
+              <span className="up-val">
+                {employeeProfile?.experience} years
+              </span>
             </div>
           </div>
           <div className="col-3">
@@ -77,7 +90,7 @@ const JobResult = ({ job }) => {
         </div>
         <div className="row">
           <div className="col result-summary">
-            <p>{employeeProfile.summary}</p>
+            <p>{employeeProfile?.summary}</p>
           </div>
         </div>
       </div>

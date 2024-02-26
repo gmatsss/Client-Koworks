@@ -1,12 +1,21 @@
 const BasicInformation = ({ currentUser }) => {
   // Extracting the necessary fields from currentUser with default values
-  const { employeeProfile = {}, testScores = {}, created } = currentUser;
+  const {
+    employeeProfile = {},
+    testScores = {}, // Ensure testScores is an object if it's null or undefined
+    created,
+    lastLogin,
+  } = currentUser || {}; // Ensure currentUser is an object if it's null or undefined
+
   const {
     gender = "No Data yet",
     bday = "No Data yet",
     location = "No Data yet",
   } = employeeProfile;
-  const { disc = {}, english = {} } = testScores;
+
+  // Ensure testScores is treated as an object, even if null or undefined, before destructuring
+  const safeTestScores = testScores || {};
+  const { disc = {}, english = {}, iq = {} } = safeTestScores;
 
   // Calculate age based on the birthday
   const age =
@@ -18,6 +27,11 @@ const BasicInformation = ({ currentUser }) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
+
+  console.log(currentUser);
+
+  // Format lastLogin for display
+  const lastActive = lastLogin ? formatDate(lastLogin) : "No Data yet";
 
   return (
     <div className="col">
@@ -38,7 +52,7 @@ const BasicInformation = ({ currentUser }) => {
           </li>
           <li>Tests Taken:</li>
           <li>
-            IQ Score: <span className="b">No Data yet</span>
+            IQ Score: <span className="b">{iq.iq_score ?? "No Data yet"}</span>
           </li>
         </ul>
         <ul className="pr-disc">
@@ -66,7 +80,7 @@ const BasicInformation = ({ currentUser }) => {
             <span className="b">{english.english_score ?? "No Data yet"}</span>
           </li>
           <li>
-            Last Active: <span className="b">No Data yet</span>
+            Last Active: <span className="b">{lastActive}</span>
           </li>
           <li>
             Member Since:

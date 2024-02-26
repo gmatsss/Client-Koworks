@@ -1,12 +1,17 @@
 import { useNavigate } from "react-router-dom";
 
-const B_form = () => {
+const B_form = ({ userRole }) => {
   let navigate = useNavigate();
 
   const handleSearch = (e) => {
     e.preventDefault();
     const searchQuery = e.target.elements.s.value;
-    navigate(`/searchEmployee?s=${searchQuery}`);
+    // Determine the path based on the userRole
+    const path =
+      userRole === "employee"
+        ? `/SearchJob?s=${searchQuery}`
+        : `/SearchEmployee?s=${searchQuery}`;
+    navigate(path);
   };
 
   return (

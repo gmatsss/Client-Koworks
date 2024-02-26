@@ -11,7 +11,9 @@ const NavLink = () => {
       : "/PostAJob";
 
   const serachJobLink =
-    currentUser && currentUser.role === "employer" ? "/SearchJob" : "/Jobseek";
+    currentUser && currentUser.role === "employer"
+      ? "/SearchEmployee"
+      : "/Jobseek";
 
   return (
     <nav className="knav">

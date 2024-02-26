@@ -42,6 +42,11 @@ import PhoneVerification from "./pages/Dashboard/DJobSeeker/VerifyProfile/PhoneV
 import DEmployer from "./pages/Dashboard/DEmployer/DEmployer";
 import Employerjob from "./pages/JobEmployerlist/Employerjob";
 import ViewJobEmployer from "./pages/ViewJobEmployer/ViewJobEmployer";
+import SearchJob from "./pages/SearchJob/SearchJob";
+import ViewOneEmployee from "./pages/ViewOneEmployee/ViewOneEmployee";
+import ViewOneJob from "./pages/ViewOneJob/ViewOneJob";
+import ViewAllPinJob from "./pages/ViewAllPinJob/ViewAllPinJob";
+import ViewAllJobApplied from "./pages/ViewAllJobapplied/ViewAllJobApplied";
 
 function App() {
   const location = useLocation();
@@ -87,6 +92,10 @@ function App() {
         <Route path="/Login" element={<Login />} />
         <Route path="/Signup" element={<SignUp />} />
         <Route path="/SearchEmployee" element={<SearchEmployee />} />
+        <Route path="/ViewOneEmployee" element={<ViewOneEmployee />} />
+        <Route path="/ViewOneJob" element={<ViewOneJob />} />
+        <Route path="/SearchJob" element={<SearchJob />} />
+
         <Route
           path="/AccountCreation"
           element={
@@ -183,6 +192,25 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/ViewAllPinJob"
+          element={
+            <ProtectedRoute role="employee">
+              <ViewAllPinJob />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/ViewAllJobApplied"
+          element={
+            <ProtectedRoute role="employee">
+              <ViewAllJobApplied />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/DEmployer/*"
           element={

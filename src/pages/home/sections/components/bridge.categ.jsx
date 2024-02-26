@@ -1,10 +1,14 @@
 import { useNavigate } from "react-router-dom";
 
-const B_categories = ({ categories }) => {
+const B_categories = ({ categories, userRole }) => {
   const navigate = useNavigate();
 
   const handleCategory = (title) => {
-    navigate(`/SearchEmployee?s=${title}`);
+    const path =
+      userRole === "employee"
+        ? `/SearchJob?s=${encodeURIComponent(title)}`
+        : `/SearchEmployee?s=${encodeURIComponent(title)}`;
+    navigate(path);
   };
 
   return (

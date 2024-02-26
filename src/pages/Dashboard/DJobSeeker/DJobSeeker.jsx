@@ -8,6 +8,9 @@ import UpdateAccountForm from "./UpdateAccountForm/UpdateAccountForm";
 import UpdateEmployeeProfile from "./UpdateEmployeeProfile/UpdateEmployeeProfile";
 
 import BookSection from "./components/booksection";
+import VerificationSection from "./components/VerificationSection ";
+import Listofpinjobs from "./components/listofpinjobs";
+import Listofjobapplied from "./components/Lisofjobapplied";
 
 const DJobSeeker = () => {
   const { currentUser } = useContext(UserContext);
@@ -32,7 +35,19 @@ const DJobSeeker = () => {
                   <Route
                     path="/"
                     element={<EmployeeDashboard currentUser={currentUser} />}
-                  />
+                  >
+                    <Route
+                      index
+                      element={
+                        <VerificationSection currentUser={currentUser} />
+                      }
+                    />
+                    <Route path="listofpinjobs" element={<Listofpinjobs />} />
+                    <Route
+                      path="Lisofjobapplied"
+                      element={<Listofjobapplied />}
+                    />
+                  </Route>
                   <Route
                     path="UpdateAccountForm"
                     element={<UpdateAccountForm />}
